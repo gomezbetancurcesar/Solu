@@ -56,7 +56,7 @@ public class ServletSPTablas extends HttpServlet {
                 _connMy = conexionBD.Conectar((String)s.getAttribute("organizacion"));              
                 CallableStatement sp_usu = _connMy.prepareCall("{call sp_mae_tablas(?,?,?,?,?,?)}");
                 sp_usu.setString(1,opcion_MaeTablas);
-                sp_usu.setInt(2,Integer.parseInt(id));
+                sp_usu.setLong(2,Integer.parseInt(id));
                 sp_usu.setString(3,tablaMae);
                 sp_usu.setString(4,rel1);
                 sp_usu.setString(5,rel2);

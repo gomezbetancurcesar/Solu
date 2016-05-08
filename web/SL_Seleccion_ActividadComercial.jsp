@@ -1,7 +1,10 @@
 
+<%@page import="java.text.DateFormat"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Calendar"%>
 <%@page import="java.sql.Statement"%>
 <%@page import="java.sql.Connection"%>
-<%@page import="java.sql.Date"%>
+<%@page import="java.util.Date"%>
 <%@page import="java.sql.CallableStatement"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="DAL.conexionBD"%>
@@ -91,7 +94,7 @@ $(document).ready(function(){
     });
 });
 function seleccion_registro_actividadComercial(id){
-    var numero = $("#nroNegocio").val();
+    var numero = $("#corrCotiza").val();    
     var secu = $("#secu").val();        
     if($("#habilitaActCom").val() == 0 || numero == null )
     {
@@ -101,11 +104,11 @@ function seleccion_registro_actividadComercial(id){
         
     $.ajax({
         url : 'ServletCargaTmp', 
-        data : "secu="+secu+"&negocio="+numero,
+        data : "secu="+secu+"&correlativo="+numero,
         type : 'POST',
         dataType : "html",
         success : function(data) {
-            location.href='SL_Actualiza_ActividadComercial.jsp?par='+id+'&negocio='+numero+'&secuencia='+secu;                
+            location.href='SL_Actualiza_ActividadComercial.jsp?par='+id+'&correlativo='+numero+'&secuencia='+secu;                
         }
     });    
 }
@@ -134,10 +137,17 @@ function seleccion_registro_actividadComercial(id){
                                                 sp_Carga.execute();
                                                 final ResultSet CargarMaeTabla = sp_Carga.getResultSet();                                                   
                                                 while(CargarMaeTabla.next())
-                                                {             
-                                            %>
-                                                    <option value="<%=CargarMaeTabla.getString("descripcion")%>"><%=CargarMaeTabla.getString("descripcion")%></option>
-                                            <%                                                       
+                                                {
+                                                    //Si la opcion es "Desarrollo Mediana Empresa", la seleccionamos por defecto (selected)
+                                                    if(CargarMaeTabla.getString("descripcion").equals("Desarrollo Mediana Empresa")){
+                                                        %>
+                                                            <option value="<%=CargarMaeTabla.getString("descripcion")%>" selected><%=CargarMaeTabla.getString("descripcion")%></option>
+                                                        <%
+                                                    }else{
+                                                        %>
+                                                            <option value="<%=CargarMaeTabla.getString("descripcion")%>"><%=CargarMaeTabla.getString("descripcion")%></option>
+                                                        <%
+                                                    }
                                                 }
                                             }catch(Exception e)
                                             {
@@ -166,7 +176,7 @@ function seleccion_registro_actividadComercial(id){
                                         
                                         if(tipoUser.equals("Administrador") || tipoUser.equals("Backoffice"))
                                         {
-                                            q = "SELECT nombre_user FROM sl_mae_usuarios";                                            
+                                            q = "SELECT nombre_user FROM sl_mae_usuarios where tipo='Usuario'";                                            
                                         }                                     
                                         if(tipoUser.equals("Supervisor"))
                                         {
@@ -189,7 +199,7 @@ function seleccion_registro_actividadComercial(id){
                             </td>
                             <td>Supervisor:</td>
                             <td>
-                                <select id="slt_filtroComercial_ejecutivo" name="slt_filtroComercial_ejecutivo"/>
+                                <select id="slt_filtroComercial_supervisor" name="slt_filtroComercial_supervisor"/>
                                     <option value="">--Seleccione--</option>     
                                    <%
                                         //Statement stmt = null;
@@ -226,7 +236,6 @@ function seleccion_registro_actividadComercial(id){
                                      <option value="">--Seleccione--</option>
                                     <%
                                         String varCargaEstado = "Estado_ActCom";
-                                        
                                         if(tipoUser.equals("Usuario") || tipoUser.equals("Supervisor"))
                                         {
                                             sp_Carga = _connMy.prepareCall("{call sp_CargaCombo(?,?,'')}");
@@ -259,8 +268,20 @@ function seleccion_registro_actividadComercial(id){
                         <tr>
                             <td align="right">Fecha &nbsp;&nbsp;Desde:</td>	
                             <td>
+                                <%
+                                    Date date = new Date();
+                                    DateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+                                    Calendar calendario = Calendar.getInstance();
+                                    calendario.setTime(date);
+                                    
+                                    calendario.set(Calendar.DAY_OF_MONTH, calendario.getActualMinimum(Calendar.DAY_OF_MONTH));
+                                    String primerDiaMes = formato.format(calendario.getTime());
+                                    
+                                    calendario.set(Calendar.DAY_OF_MONTH, calendario.getActualMaximum(Calendar.DAY_OF_MONTH));
+                                    String ultimoDiaMes = formato.format(calendario.getTime());
+                                %>
                                 <!--Codigo Sistemas SA-->
-                                <input type = "text" readonly name = "txt_filtroComercial_ingreso" id= "txt_filtroComercial_ingreso" size="12" />
+                                <input type = "text" readonly value="<%out.print(primerDiaMes);%>" name = "txt_filtroComercial_ingreso" id= "txt_filtroComercial_ingreso" size="12" />
                                 <img src="images/calendario.png" width="16" height="16" border="0" title="Fecha Inicial" id="lanzador" />
                                 <!-- script que define y configura el calendario--> 
                                 <script type="text/javascript"> 
@@ -273,7 +294,7 @@ function seleccion_registro_actividadComercial(id){
                             </td>
                             <td align="right">Fecha&nbsp;&nbsp; Hasta:</td>
                             <td>
-                                <input type = "text" readonly name = "txt_filtroComercial_final" id = "txt_filtroComercial_final" size="12"/>
+                                <input type = "text" readonly value="<%out.print(ultimoDiaMes);%>" name="txt_filtroComercial_final" id = "txt_filtroComercial_final" size="12"/>
                                 <img src="images/calendario.png" width="16" height="16" border="0" title="Fecha Inicial" id="lanza" />
                                 <!-- script que define y configura el calendario--> 
                                 <script type="text/javascript"> 
@@ -308,8 +329,8 @@ function seleccion_registro_actividadComercial(id){
                                 <th width="6.17%">Rut Cliente</th>
                                 <th width="19.03%">Cliente</th>
                                 <th width="3.9%">Caso</th>
-                                <th width="8.8%">N&uacute;mero Contrato</th>
-                                <th width="7.26%">Nro Negocio</th>
+                                <th width="8.8%">N&uacute;mero Negocio</th>
+                                <th width="7.26%">Correlativo Cotizaci&oacute;n</th>
                                 <th width="7.14%">Tipo Servicio</th>
                                 <th width="9.1%">Servicios M&oacute;viles</th>
                                 <th width="8.8%">Cantidad M&oacute;viles</th>
@@ -321,14 +342,15 @@ function seleccion_registro_actividadComercial(id){
                             <%                                
                                 String var = "consulta_N";
                                 
-                                CallableStatement sp_usu = _connMy.prepareCall("{call sp_actividad_comercial(?,?,?,?,?,?,?,'','','1','2','3','','','4','5','6','','','','','','','')}");
+                                CallableStatement sp_usu = _connMy.prepareCall("{call sp_actividad_comercial(?,?,?,?,?,?,?,?,'','1','2','3','','','4','5','6','','','','','','','','0')}");
                                 sp_usu.setString(1,var);
-                                sp_usu.setString(2,tipoUser);
-                                sp_usu.setString(3,"");
-                                sp_usu.setDate(4,null);                                
-                                sp_usu.setString(5,"");
+                                sp_usu.setInt(2,0);
+                                sp_usu.setString(3,tipoUser);
+                                sp_usu.setString(4,"");
+                                sp_usu.setDate(5,null);                                
                                 sp_usu.setString(6,"");
-                                sp_usu.setString(7,(String)s.getAttribute("rut"));                                                                
+                                sp_usu.setString(7,"");
+                                sp_usu.setString(8,(String)s.getAttribute("rut"));                                                                
                                 sp_usu.execute();
                                 final ResultSet rs = sp_usu.getResultSet();
                                 String cla = "";
@@ -347,7 +369,7 @@ function seleccion_registro_actividadComercial(id){
                             <td>
                                 <a href="javascript: onclick=ModificaActComercial(<%=cont%>)"> >></a>
                                 <input type="hidden" value="0" id="habilitaActCom" name="habilitaActCom" />
-                                <input type="hidden" value="" id="nroNegocio" />
+                                <input type="hidden" value="" id="corrCotiza" />
                             </td>
                             <td id="ActCom_rv<%=cont%>"><%= rs.getString("rut_eje")%></td>
                             <td id="ActCom_NomEje<%=cont%>"><%= rs.getString("nombre_eje")%></td>
@@ -355,8 +377,8 @@ function seleccion_registro_actividadComercial(id){
                             <td id="ActCom_RutCli<%=cont%>"><%= rs.getString("rut_cli")%></td>
                             <td id="ActCom_NomCli<%=cont%>"><%= rs.getString("nombre_cli")%></td>
                             <td id="ActCom_Caso<%=cont%>"><%= rs.getString("caso")%></td>
-                            <td id="ActCom_nroContrato<%=cont%>"><%= rs.getString("nro_contrato")%></td>
                             <td id="ActCom_nroNegocio<%=cont%>"><%= rs.getString("nro_negocio")%></td>
+                            <td id="ActCom_corrCotiza<%=cont%>"><%= rs.getString("corr_cotiza")%></td>
                             <td id="ActCom_TipoServi<%=cont%>"><%= rs.getString("tipo_servicio")%></td>
                             <td id="ActCom_ServicioMovil<%=cont%>"><%= rs.getString("servicios_moviles")%></td>                            
                             <td id="ActCom_cantMovil<%=cont%>"><%= rs.getString("cant_moviles")%></td>
@@ -375,7 +397,10 @@ function seleccion_registro_actividadComercial(id){
         <tr>
             <!--Sistemas sa 20/10/2015-->
             <td>
-                <input class ="botonera" type="button" name="btn_actComercial_Ingresa" value="Ingresar" onClick="window.location.href='SL_Actualiza_ActividadComercial.jsp?par=1&secuencia='+<%=secu%>"/>	
+                <%
+                if(!tipoUser.equals("Backoffice")){
+                    %><input class ="botonera" type="button" name="btn_actComercial_Ingresa" value="Ingresar" onClick="window.location.href='SL_Actualiza_ActividadComercial.jsp?par=1&secuencia='+<%=secu%>"/>	<%;
+                }%> 
                 <input class ="botonera" type="submit" name="btn_actComercial_Modifica" id="btn_actComercial_Modifica" value="Modificar" onClick="seleccion_registro_actividadComercial(2)" />	
                 <input class ="botonera" type="submit" name="btn_actComercial_Consulta" value="Consultar" onClick="seleccion_registro_actividadComercial(3)"  />                
 <!--                <input class ="botonera" style="display: none" type="button" onclick="desmarca_registro_actividadComercial()" id="btn_actComercial_cancela" name="btn_actComercial_cancela" value="Desmarcar" />-->

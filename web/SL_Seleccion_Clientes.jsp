@@ -126,7 +126,7 @@
                                         
                                         if(tipoUser.equals("Administrador") || tipoUser.equals("Backoffice"))
                                         {
-                                            q = "SELECT nombre_user FROM sl_mae_usuarios";                                            
+                                            q = "SELECT nombre_user FROM sl_mae_usuarios where tipo='Usuario'";                                            
                                         }  
                                          if(tipoUser.equals("Backoffice")){
                                                 showIngresar = false;

@@ -26,7 +26,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "ServletNroNegocio", urlPatterns = {"/ServletNroNegocio"})
 public class ServletNroNegocio extends HttpServlet {
-
+ 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,12 +43,14 @@ protected void processRequest(HttpServletRequest request, HttpServletResponse re
             /* TODO output your page here. You may use following sample code. */
             HttpSession s = request.getSession();
             Connection _connMy = null;
-            String nroNegocio;
+            String campo;
+            String valor;
             
-            nroNegocio = request.getParameter("numeroNegocio");
+            campo = request.getParameter("campo");
+            valor = request.getParameter("valor");
             try{
                 _connMy = conexionBD.Conectar((String)s.getAttribute("organizacion"));
-                String query = "select count(nro_negocio) as cantidad from sl_actcomercial_tot where nro_negocio = "+nroNegocio;
+                String query = "select count("+campo+") as cantidad from sl_actcomercial_tot where "+campo+" = "+valor;
                 ResultSet rs = _connMy.createStatement().executeQuery(query);
                 
                 Integer cantidad = 0;

@@ -56,7 +56,7 @@ public class ServletSPDetalleActComer extends HttpServlet {
             String cargoFijoNue = request.getParameter("txt_detalleComercial_cargoFijoNue");
             String port_pp_hab = request.getParameter("slt_detalleComercial_portPPHAB");
             String arpu = request.getParameter("txt_detalleComercial_arpu");
-            String nroNegocio = request.getParameter("txt_actComercial_nroNegocio");
+            String corrCotiza = request.getParameter("txt_actComercial_corrCotiza");
             String secuencia = request.getParameter("secuencia");
             double ufe = 0;
             if(uf.equals(""))
@@ -85,7 +85,7 @@ public class ServletSPDetalleActComer extends HttpServlet {
                 sp_usu.setLong(9,Long.parseLong(cargoFijoNue));
                 sp_usu.setString(10,port_pp_hab);
                 sp_usu.setLong(11,Long.parseLong(arpu));
-                sp_usu.setLong(12,Long.parseLong(nroNegocio));
+                sp_usu.setLong(12,Long.parseLong(corrCotiza));
                 sp_usu.setLong(13,Integer.parseInt(secuencia));            
                 sp_usu.execute();
 
@@ -102,7 +102,7 @@ public class ServletSPDetalleActComer extends HttpServlet {
                 sp_usu.setLong(9,0);
                 sp_usu.setString(10,"");
                 sp_usu.setLong(11,0);
-                sp_usu.setLong(12,Long.parseLong(nroNegocio)); 
+                sp_usu.setLong(12,Long.parseLong(corrCotiza)); 
                 sp_usu.setLong(13,Long.parseLong(secuencia));
                 sp_usu.execute();
                 final ResultSet rs = sp_usu.getResultSet();            

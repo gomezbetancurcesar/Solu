@@ -56,7 +56,7 @@ public class ServletSPWorkFlow extends HttpServlet {
             _connMy = conexionBD.Conectar((String)s.getAttribute("organizacion"));            
             CallableStatement sp_usu = _connMy.prepareCall("{call sp_mae_workflow(?,?,?,?,?)}");
             sp_usu.setString(1,opcion_WorkFlow);
-            sp_usu.setInt(2,Integer.parseInt(id));
+            sp_usu.setLong(2,Integer.parseInt(id));
             sp_usu.setString(3,actual);
             sp_usu.setString(4,siguiente);
             sp_usu.setString(5,rut);

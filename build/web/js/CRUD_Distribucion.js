@@ -13,22 +13,8 @@ function guardaDistribucion()
     var uf = [];
     var arpu = [];
     var portPPHAB = [];
-    var negocio = $("#nroNegocio").val();
     var secuencia = $("#secuencia").val();
-    var tipoClte = $("#tipoClte").val();
-    var nroContrato = $("#nroContrato").val();
-    var tipoServicio = $("#tipoServicio").val();
-    var estado = $("#estado").val();
-    var tipoNegocio = $("#tipoNegocio").val();
-    var serviMovil = $("#serviMovil").val();
-    var caso = $("#caso").val();
-    var nomCli = $("#nomCli").val();
-    var rutCli = $("#rutCli").val();
-    var comentario = $("#comentario").val();
-    var fecha = $("#fecha").val();    
-    var nomEje = $("#nomEje").val();
-    var rv = $("#rv").val();
-    var supervisor = $("#supervisor").val();  
+    var corrCotiza = $("#corrCotiza").val();            
     var cantMovil = $("#cantidad").val(); 
     var tmpCantidad = $("#tmpCantidadTotal").val();
     var par = $("#parametroActComercial").val()
@@ -78,7 +64,7 @@ function guardaDistribucion()
     $.ajax({
         url : 'ServletDistribucion',        
         data: "arrayCantidad="+cant+"&arrayTipoAnt="+tipoAntiguo+"&arrayPlanAnt="+planAntiguo+"&arrayTipoNue="+tipoNuevo+"&arrayPlanNue="+planNuevo+
-                "&filas="+nroFilas+"&nroMovil="+nroMovil+"&nroNegocio="+negocio+"&secuencia="+secuencia+
+                "&filas="+nroFilas+"&nroMovil="+nroMovil+"&correlativo="+corrCotiza+"&secuencia="+secuencia+
                 "&arrayCargoAntiguo="+cargoAntiguo+"&arrayCargoNuevo="+cargoNuevo+
                 "&arrayUF="+uf+"&arrayArpu="+arpu+"&arrayportPPHAB="+portPPHAB,
         type : 'POST',
@@ -90,17 +76,13 @@ function guardaDistribucion()
                 {
                     //resta de cantidad de movil                    
                     //cantMovil = cantMovil - tmpCantidad;                    
-                    location.href = "SL_Actualiza_ActividadComercial.jsp?par="+par+"&negocio="+negocio+"&secuencia="+secuencia+"&tipoClte="+tipoClte+
-                        "&nroContrato="+nroContrato+"&tipoServicio="+tipoServicio+"&estado="+estado+"&tipoNegocio="+tipoNegocio+
-                        "&serviMovil="+serviMovil+"&caso="+caso+"&nomCli="+nomCli+"&rutCli="+rutCli+"&comentario="+comentario+
-                        "&fecha="+fecha+"&nomEje="+nomEje+"&rv="+rv+"&supervisor="+supervisor+"&cantidad="+cantMovil;
+                    location.href = "SL_Actualiza_ActividadComercial.jsp?par="+par+"&secuencia="+secuencia+
+                        "&correlativo="+corrCotiza+"&cantidad="+cantMovil;
                 }                
             }else
             {
-                location.href = "SL_Actualiza_ActividadComercial.jsp?par="+par+"&negocio="+negocio+"&secuencia="+secuencia+"&tipoClte="+tipoClte+
-                "&nroContrato="+nroContrato+"&tipoServicio="+tipoServicio+"&estado="+estado+"&tipoNegocio="+tipoNegocio+
-                "&serviMovil="+serviMovil+"&caso="+caso+"&nomCli="+nomCli+"&rutCli="+rutCli+"&comentario="+comentario+
-                "&fecha="+fecha+"&nomEje="+nomEje+"&rv="+rv+"&supervisor="+supervisor+"&cantidad="+cantMovil;
+                location.href = "SL_Actualiza_ActividadComercial.jsp?par="+par+"&secuencia="+secuencia+
+                "&correlativo="+corrCotiza+"&cantidad="+cantMovil;
             }
            
              
@@ -260,47 +242,15 @@ function ModificaDistribucion(id)
 }
 function AbrirDistribucion()
 {       
-    var validarNum = new RegExp("[^0-9]");
-    var rv = $("#txt_actComercial_rv").val();
-    var nomEje = $("#slt_actComercial_ejecutivo").val();
-    var fecha = $("#txt_actComercial_fecha").val();
-    var supervisor = $("#slt_actComercial_supervisor").val();
-    var comentario = $("#txa_actComercial_comentario").val();
-    var rutCli = $("#txt_actComercial_rutcli").val();
-    var nomCli = $("#txt_actComercial_nomCli").val();
-    var caso =$("#txt_actComercial_caso").val();
-    var nroNegocio = $("#txt_actComercial_nroNegocio").val();  
-    var tipoClte = $("#slt_actComercial_tipoClte").val();
-    var nroContrato = $("#txt_actComercial_nroContrato").val();
-    var tipoServicio = $("#slt_actComercial_tipoServicio").val();
+    var validarNum = new RegExp("[^0-9]");    
+    var corrCotiza = $("#txt_actComercial_corrCotiza").val();  
+//    var nroContrato = $("#txt_actComercial_nroContrato").val();    
     var cantMovil = $("#txt_actComercial_cantMovil").val();
-    var estado = $("#slt_actComercial_status").val();
-    var tipoNegocio = $("#slt_actComercial_TipoNegocio").val();
-    var serviMovil = $("#slt_actComercial_serviMovil").val();
     var ultimo = $("#ultimo").val();
     var contador = $("#cantidad").val();
     var par = $("#parametroActComercial").val();
     var resta=cantMovil-contador;
-
-    if( $("#txt_actComercial_nroNegocio").val()== "")
-    {
-        FuncionErrores(203); 
-        $("#txt_actComercial_nroNegocio").focus();
-        return false;
-    }
-     if( $("#txt_actComercial_nroNegocio").val()== 0)
-    {
-        FuncionErrores(225);
-        $("#txt_actComercial_nroNegocio").focus();
-        return false;
-    }
-    if(validarNum.test($("#txt_actComercial_nroNegocio").val()))
-    {
-        FuncionErrores(202); 
-        $("#txt_actComercial_nroNegocio").focus();
-        return false;
-    }
-    if($("#txt_actComercial_cantMovil").val() == "")
+    if($("#txt_actComercial_cantMovil").val() == "" || $("#txt_actComercial_cantMovil").val() == "0" )
     {
         FuncionErrores(224);
         $("#txt_actComercial_cantMovil").focus();
@@ -317,10 +267,8 @@ function AbrirDistribucion()
         
         var secu = $("#secuencia").val();
 //        location.href="SL_DistribucionMoviles.jsp?cantidad="+cantMovil+"&secuencia="+secu+"&negocio="+nroNegocio+"&tipoClte="+tipoClte+
-        location.href="SL_DistribucionMoviles.jsp?cantidad="+cantMovil+"&secuencia="+secu+"&negocio="+nroNegocio+"&tipoClte="+tipoClte+                
-                "&nroContrato="+nroContrato+"&tipoServicio="+tipoServicio+"&estado="+estado+"&tipoNegocio="+tipoNegocio+
-                "&serviMovil="+serviMovil+"&caso="+caso+"&nomCli="+nomCli+"&rutCli="+rutCli+"&comentario="+comentario+
-                "&fecha="+fecha+"&nomEje="+nomEje+"&rv="+rv+"&supervisor="+supervisor+"&ultimo="+ultimo+"&resta="+resta+"&par="+par;
+        location.href="SL_DistribucionMoviles.jsp?cantidad="+cantMovil+"&secuencia="+secu+
+                "&correlativo="+corrCotiza+"&ultimo="+ultimo+"&resta="+resta+"&par="+par;
 //                "&fecha="+fecha+"&nomEje="+nomEje+"&rv="+rv+"&supervisor="+supervisor+"&ultimo="+ultimo+"&cantidad="+cantidad;
     }
 }
@@ -410,27 +358,11 @@ function ValidaDistribucion(id)
     TablaDistribucion(id);
 }
 function Volver()
-{
-    var negocio = $("#nroNegocio").val();
+{    
     var secuencia = $("#secuencia").val();
-    var tipoClte = $("#tipoClte").val();
-    var nroContrato = $("#nroContrato").val();
-    var tipoServicio = $("#tipoServicio").val();
-    var estado = $("#estado").val();
-    var tipoNegocio = $("#tipoNegocio").val();
-    var serviMovil = $("#serviMovil").val();
-    var caso = $("#caso").val();
-    var nomCli = $("#nomCli").val();
-    var rutCli = $("#rutCli").val();
-    var comentario = $("#comentario").val();
-    var fecha = $("#fecha").val();    
-    var nomEje = $("#nomEje").val();
-    var rv = $("#rv").val();
-    var supervisor = $("#supervisor").val();  
+    var corrCotiza = $("#corrCotiza").val();
     var cantMovil = $("#cantidad").val();
-    var par = $("#parametroActComercial").val();
-    location.href = "SL_Actualiza_ActividadComercial.jsp?par="+par+"&negocio="+negocio+"&secuencia="+secuencia+"&tipoClte="+tipoClte+
-                "&nroContrato="+nroContrato+"&tipoServicio="+tipoServicio+"&estado="+estado+"&tipoNegocio="+tipoNegocio+
-                "&serviMovil="+serviMovil+"&caso="+caso+"&nomCli="+nomCli+"&rutCli="+rutCli+"&comentario="+comentario+
-                "&fecha="+fecha+"&nomEje="+nomEje+"&rv="+rv+"&supervisor="+supervisor+"&cantidad="+cantMovil;
+    var par = $("#parametroActComercial").val();        
+    location.href = "SL_Actualiza_ActividadComercial.jsp?par="+par+"&secuencia="+secuencia+
+                "&correlativo="+corrCotiza+"&cantidad="+cantMovil;
 }

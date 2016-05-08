@@ -49,13 +49,16 @@ public class ServletFiltroComercial extends HttpServlet {
             Connection _connMy = null;
             String tipoNegocio = request.getParameter("tipoNegocio");
             SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");                    
-            String ejecutivo = request.getParameter("ejecutivo");
+            String ejecutivo = (""+s.getAttribute("tipo")).equals("Usuario") ? (String)s.getAttribute("nom") : request.getParameter("ejecutivo");
             String estado = request.getParameter("estado");
             String fechaInicial = request.getParameter("fechaInicial");
             String fechaFinal = request.getParameter("fechaFinal");   
-        try{                
+            String supervisor = request.getParameter("supervisor");   
+            System.out.println("Supervisor: "+supervisor);
+        try{
+            System.out.println((String)s.getAttribute("rut")+" "+(String)s.getAttribute("tipo"));
             _connMy =conexionBD.Conectar((String)s.getAttribute("organizacion"));            
-            CallableStatement sp_usu = _connMy.prepareCall("{call sp_filtroActComercial(?,?,?,?,?,?,?)}");
+            CallableStatement sp_usu = _connMy.prepareCall("{call sp_filtroActComercial(?,?,?,?,?,?,?,?)}");
             sp_usu.setString(1,tipoNegocio);
             sp_usu.setString(2,ejecutivo);
             sp_usu.setString(3,estado);
@@ -63,6 +66,7 @@ public class ServletFiltroComercial extends HttpServlet {
             sp_usu.setString(5,fechaFinal);       
             sp_usu.setString(6,(String)s.getAttribute("tipo"));       
             sp_usu.setString(7,(String)s.getAttribute("rut"));       
+            sp_usu.setString(8,supervisor);       
             sp_usu.execute();
             final ResultSet rs = sp_usu.getResultSet();            
             String cla = "";
@@ -81,15 +85,15 @@ public class ServletFiltroComercial extends HttpServlet {
 
                 salida += "<td><a id=\"seleccion"+cont+"\" href=\"javascript: onclick=ModificaActComercial("+cont+")\"> >></a>\n" +
                             " <input type=\"hidden\" value=\"0\" id=\"habilitaActCom\" name=\"habilitaActCom\" />\n" +
-"                                 <input type=\"hidden\" value=\"\" id=\"nroNegocio\" /></td> ";
+"                                 <input type=\"hidden\" value=\"\" id=\"corrCotiza\" /></td> ";
                 salida += "<td style=\"width: 100px\"  id =\"ActCom_rv"+cont+"\">"+rs.getString("rut_eje")+"</td>";   
                 salida += "<td id =\"ActCom_NomEje"+cont+"\">"+rs.getString("nombre_eje")+"</td>";   
                 salida += "<td id =\"ActCom_Fecha"+cont+"\">"+rs.getString("fecha")+"</td>"; 
                 salida += "<td id =\"ActCom_RutCli"+cont+"\">"+rs.getString("rut_cli")+"</td>"; 
                 salida += "<td style=\"width: 150px\" id =\"ActCom_NomCli"+cont+"\">"+rs.getString("nombre_cli")+"</td>"; 
                 salida += "<td id =\"ActCom_Caso"+cont+"\">"+rs.getString("caso")+"</td>"; 
-                salida += "<td id =\"ActCom_nroContrato"+cont+"\">"+rs.getString("nro_contrato")+"</td>"; 
                 salida += "<td id =\"ActCom_nroNegocio"+cont+"\">"+rs.getString("nro_negocio")+"</td>"; 
+                salida += "<td id =\"ActCom_corrCotiza"+cont+"\">"+rs.getString("corr_cotiza")+"</td>"; 
                 salida += "<td id =\"ActCom_TipoServi"+cont+"\">"+rs.getString("tipo_servicio")+"</td>"; 
                 salida += "<td id =\"ActCom_ServicioMovil"+cont+"\">"+rs.getString("servicios_moviles")+"</td>"; 
                 salida += "<td id =\"ActCom_cantMovil"+cont+"\">"+rs.getString("cant_moviles")+"</td>"; 

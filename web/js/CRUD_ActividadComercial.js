@@ -1,4 +1,5 @@
-function ActividadComercial(id,secuencia){    
+function ActividadComercial(id,secuencia){
+    var estadosExcepciones = ["Oportunidad", "Cerrada 80", "Perdida", "Propuesta"];
     var mod = "";
     if (id === 1 || id === 4)
     {	
@@ -10,10 +11,10 @@ function ActividadComercial(id,secuencia){
     }
     var fila = $("#tblDetalleComer").children("tbody").children("tr").length;
     var rv = "";
-    rv = $("#txt_actComercial_rv").val();;
+    rv = $("#txt_actComercial_rv").val();
     var rutCli = $("#txt_actComercial_rutcli").val();
     var tipoServicio = $("#slt_actComercial_tipoServicio").val();
-    var nomEje = $("#txt_actComercial_nomEje").val();
+    var nomEje = "";
     var nomCli = $("#txt_actComercial_nomCli").val();
     var fecha = $("#txt_actComercial_fecha").val();
     var caso = $("#txt_actComercial_caso").val();
@@ -24,58 +25,58 @@ function ActividadComercial(id,secuencia){
     var tipoCli = $("#slt_actComercial_tipoClte").val();
     var estado = $("#slt_actComercial_status").val();
     var comentario = $("#txa_actComercial_comentario").val();
-    var nroContrato = $("#txt_actComercial_nroContrato").val();
+    var corrCotiza = $("#txt_actComercial_corrCotiza").val();
     var tipoNegocio = "";
     var supervisor = $("#txt_actComercial_supervisor").val();
-    if($("#tipoUser").val() == "Administrador")
+    if($("#tipoUser").val() == "Usuario" || $("#tipoUser").val() == "Backoffice")
     {
-        tipoNegocio = $("#slt_actComercial_TipoNegocio").val();
+        nomEje = $("#txt_actComercial_nomEje").val();
     }        
     else{
-        tipoNegocio = $("#txt_actComercial_TipoNegocio").val();
+        nomEje = $("#slt_actComercial_ejecutivo").val();
+        
     }
-    
-    
+    tipoNegocio = $("#slt_actComercial_TipoNegocio").val();
     if($("#chkBox_actComercial_CRM").is(':checked'))
     {
         crm= "si";
     }else 
     {
         crm = "no";
-    }        
+    }
+    
+    if(cantMovil != fila && $.inArray(estado, estadosExcepciones) < 0)
+    {
+        FuncionErrores(226);
+        $("#txt_actComercial_cantMovil").focus();
+        return false;
+    }
+    
+    
     $.ajax({
         url : 'ServletSPActividadComercial', 
         data : "opcion_ActividadComercial="+mod+"&txt_actComercial_rv="+rv+"&txt_actComercial_rutcli="+rutCli+"&slt_actComercial_tipoServicio="+tipoServicio+
                 "&slt_actComercial_ejecutivo="+nomEje+"&txt_actComercial_nomCli="+nomCli+"&txt_actComercial_fecha="+fecha+"&txt_actComercial_caso="+caso+
                 "&txt_actComercial_cantMovil="+cantMovil+"&slt_actComercial_serviMovil="+ServicioMovil+"&txt_actComercial_nroNegocio="+nroNegocio+"&chkBox_actComercial_CRM="+crm+
-                "&slt_actComercial_tipoClte="+tipoCli+"&slt_actComercial_status="+estado+"&txa_actComercial_comentario="+comentario+"&txt_actComercial_nroContrato="+nroContrato+
+                "&slt_actComercial_tipoClte="+tipoCli+"&slt_actComercial_status="+estado+"&txa_actComercial_comentario="+comentario+"&txt_actComercial_corrCotiza="+corrCotiza+
                 "&slt_actComercial_TipoNegocio="+tipoNegocio+"&seq="+secuencia+"&slt_actComercial_supervisor="+supervisor,
         type : 'POST',
         dataType : "html",
-        success : function(data) {
-            if(cantMovil != fila)
-            {
-                FuncionErrores(226);
-                $("#txt_actComercial_cantMovil").focus();
-                return false;
-            }
-            else
-            {
+        success : function(data){
                 if(data != "")
                 {
                     FuncionErrores(222);      
                     if(fila >= 1)
                     {
                        $("#btn_detalleComercial_limpiaTabla").show();
-                   }                        
-                    $("#txt_actComercial_nroNegocio").focus();
-                   return false;
+                    }                        
+                    $("#txt_actComercial_corrCotiza").focus();
+                    return false;
                 }
                 else
                 {
                     location.href="SL_Seleccion_ActividadComercial.jsp";
                 }
-            }
         }        
     });
 }
@@ -87,19 +88,19 @@ function ModificaActComercial(id)
     {
         $("#filaTablaActComercial"+id).css("background-color","#58FAF4").removeClass("alt");        
         $("#habilitaActCom").val("1");
-        var neg =  $("#ActCom_nroNegocio"+id).text();
+        var neg =  $("#ActCom_corrCotiza"+id).text();        
         var caso = $("#ActCom_Caso"+id).text();
         if($("#ActCom_estadoCierre"+id).text() == "DE")
         {
             $("#btn_actComercial_Modifica").hide();
         }
-        $("#nroNegocio").val(neg);
+        $("#corrCotiza").val(neg);
         $("#caso").val(caso);
     }
 }
 function desmarca_registro_actividadComercial()
 {
-    $("#nroNegocio").val("");
+    $("#corrCotiza").val("");
     var td = $('#tblActComercial').children('tbody').children('tr').length;           
     for(var i = 0; i<=td;i++)
     {                
@@ -135,12 +136,14 @@ function filtroActComercial()
     var filEstado = "";
     var filFechaInicial = "";
     var filFechaFinal = "";
+    var filSupervisor="";
     filTipNeg= $("#slt_filtroComercial_tipoNegocio").val();
     filEjecutivo= $("#slt_filtroComercial_ejecutivo").val();
     filEstado = $("#slt_filtroComercial_estado").val();  
     filFechaInicial = $("#txt_filtroComercial_ingreso").val();  
     filFechaFinal = $("#txt_filtroComercial_final").val();
-    if(filTipNeg == "" && filEjecutivo == "" && filEstado == "" && filFechaInicial == "" && filFechaFinal  == "" )
+    filSupervisor=$("#slt_filtroComercial_supervisor").val();
+    if(filTipNeg == "" && filEjecutivo == "" && filEstado == "" && filFechaInicial == "" && filFechaFinal  == "" && filSupervisor=="")
     {
         FuncionErrores(228);
         return false;
@@ -162,7 +165,7 @@ function filtroActComercial()
     $.ajax({
         url : 'ServletFiltroComercial', 
         data: "tipoNegocio="+filTipNeg+"&ejecutivo="+filEjecutivo+"&estado="+filEstado+
-                "&fechaInicial="+filFechaInicial+"&fechaFinal="+filFechaFinal,
+                "&fechaInicial="+filFechaInicial+"&fechaFinal="+filFechaFinal+"&supervisor="+filSupervisor,
         type : 'POST',
         dataType : "html",
         success : function(data) {     

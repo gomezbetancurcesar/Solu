@@ -1,3 +1,5 @@
+
+
 function FuncionActividadComercial(id,secuencia){
     var validarRut = new RegExp("[^0-9kK-]"); 
     var validarNum = new RegExp("[^0-9]");    
@@ -6,13 +8,20 @@ function FuncionActividadComercial(id,secuencia){
     var posicion = rv.indexOf('-'); 
     var tmp = VerificaRut(rv);       
     var posicion1 = rutCli.indexOf('-'); 
-    var tmp1 = VerificaRut(rutCli);    
-        //    validacion nroNegocio
+    var tmp1 = VerificaRut(rutCli);
+    var validaCorrCotiza = false;
+    var errorCorrCotiza = false;
+    var validaNroNegocio = false;
+    var errorNroNegocio = false;
+    
     if(id == '1'){
+        //START VALIDA corrCotizacion
         $.ajax({
             url: 'ServletNroNegocio',
+            async: false,
             data:{
-                'numeroNegocio': $("#txt_actComercial_nroNegocio").val()
+                "campo": "corr_cotiza",
+                "valor": $("#txt_actComercial_corrCotiza").val()
             },
             type : 'POST',
             success : function(count){
@@ -21,17 +30,44 @@ function FuncionActividadComercial(id,secuencia){
                 alert(error.responseText);
             }
         }).done(function(count){
+            validaCorrCotiza = true;
             var cantidad = parseInt(count);
             if($.isNumeric(cantidad)){
                 if(cantidad != 0){
-                    FuncionErrores(245);
-                    $("#txt_actComercial_nroNegocio").focus();
-                    return false;
+                    errorCorrCotiza = true;
                 }
             }
         });
+        //END VALIDA corrCotizacion
+        
+        //START  validacion nroNegocio
+        $.ajax({
+            url: 'ServletNroNegocio',
+            async: false,
+            data:{
+                "campo": "nro_negocio",
+                "valor": $("#txt_actComercial_nroNegocio").val()
+            },
+            type : 'POST',
+            success : function(count){
+            },
+            error: function(error){
+                alert(error.responseText);
+            }
+        }).done(function(count){
+            validaNroNegocio = true;
+            var cantidad = parseInt(count);
+            if($.isNumeric(cantidad)){
+                if(cantidad != 0){
+                    errorNroNegocio = true;
+                }
+            }
+        });
+        //END validacion nroNegocio
+    }else{
+        validaCorrCotiza = true;
+        validaNroNegocio = true;
     }
-// validacion nroNegocio 
 
     if(rv == ""){
         FuncionErrores(113);    
@@ -101,7 +137,15 @@ function FuncionActividadComercial(id,secuencia){
 //        $("#txt_actComercial_supervisor").focus();
 //        return false;
 //    }
-    if($("#txt_actComercial_caso").val() == "")
+    if($("#txt_actComercial_caso").val() == "" &&(
+                $("#slt_actComercial_status").val()=="Ingresado a Back" || 
+                $("#slt_actComercial_status").val()=="Asignado" ||
+                $("#slt_actComercial_status").val()=="En Revisi\u00F3n" ||
+                $("#slt_actComercial_status").val()=="En Revisión" ||
+                $("#slt_actComercial_status").val()=="Rechazado Back" || 
+                $("#slt_actComercial_status").val()=="Ingresado TATA" || 
+                $("#slt_actComercial_status").val()=="Rechazado TATA" || 
+                $("#slt_actComercial_status").val()=="Finalizado OK" ) )
     {
         FuncionErrores(242); 
         $("#txt_actComercial_caso").focus();
@@ -113,7 +157,7 @@ function FuncionActividadComercial(id,secuencia){
         $("#txt_actComercial_caso").focus();
         return false;
     }	
-    if( $("#txt_actComercial_nroNegocio").val()== "")
+    if( $("#txt_actComercial_nroNegocio").val()== "" && $("#slt_actComercial_status").val() == "Finalizada OK" )
     {
         FuncionErrores(203); 
         $("#txt_actComercial_nroNegocio").focus();
@@ -131,18 +175,18 @@ function FuncionActividadComercial(id,secuencia){
         $("#slt_actComercial_tipoClte").focus();
         return false;
     }
-    if( $("#txt_actComercial_nroContrato").val()== "")
-    {
-        FuncionErrores(205); 
-        $("#txt_actComercial_nroContrato").focus();
-        return false;
-    }
-    if(validarNum.test($("#txt_actComercial_nroContrato").val()))
-    {
-        FuncionErrores(202);
-        $("#txt_actComercial_nroContrato").focus();
-        return false;
-    }
+//    if( $("#txt_actComercial_corrCotiza").val()== "")
+//    {
+//        FuncionErrores(205); 
+//        $("#txt_actComercial_corrCotiza").focus();
+//        return false;
+//    }
+//    if(validarNum.test($("#txt_actComercial_corrCotiza").val()))
+//    {
+//        FuncionErrores(202);
+//        $("#txt_actComercial_corrCotiza").focus();
+//        return false;
+//    }
 //    validacion nroNegocio
 //    if(id == 1 && !validarNumeroNegocio($("#txt_actComercial_nroNegocio").val())){
 //        FuncionErrores(245);
@@ -162,12 +206,12 @@ function FuncionActividadComercial(id,secuencia){
         $("#slt_actComercial_serviMovil").focus();
         return false;
     }	
-    if($("#txt_actComercial_cantMovil").val() == "")
+    /*if($("#txt_actComercial_cantMovil").val() == "")
     {
         FuncionErrores(224);
         $("#txt_actComercial_cantMovil").focus();
         return false;
-    }
+    }*/
     if(validarNum.test($("#txt_actComercial_cantMovil").val()))
     {
         FuncionErrores(224);
@@ -185,8 +229,22 @@ function FuncionActividadComercial(id,secuencia){
         FuncionErrores(209);
         $("#slt_actComercial_TipoNegocio").focus();
         return false;
-    }          
-    ActividadComercial(id,secuencia);
+    }
+    if(validaCorrCotiza && validaNroNegocio){
+        if(errorCorrCotiza){
+            FuncionErrores(245);
+            $("#txt_actComercial_corrCotiza").focus();
+            return false;
+        }
+        
+        if(errorNroNegocio){
+            FuncionErrores(245);
+            $("#txt_actComercial_corrCotiza").focus();
+            return false;
+        }
+        ActividadComercial(id,secuencia);
+    }
+    
 }
 function DetalleActividadComercial(id)
 {
@@ -217,12 +275,6 @@ function DetalleActividadComercial(id)
         $("#txt_detalleComercial_nroMovil").focus();
         return false;
     }
-//    if($("#txt_detalleComercial_uf").val() == "")
-//    {
-//        FuncionErrores(211);
-//        $("#txt_detalleComercial_uf").focus();
-//        return false;       
-//    }
     if(valNumDouble.test($("#txt_detalleComercial_uf").val()))
     {
         FuncionErrores(202);
@@ -235,36 +287,18 @@ function DetalleActividadComercial(id)
         $("#txt_detalleComercial_uf").focus();
         return false;
     }
-//    if($("#slt_detalleComercial_tipoPlanAnt").val() == "")
-//    {
-//        FuncionErrores(212);
-//        $("#slt_detalleComercial_tipoPlanAnt").focus();
-//        return false;
-//    }
     if($("#slt_detalleComercial_tipoPlanNue").val() == "")
     {
         FuncionErrores(213);
         $("#slt_detalleComercial_tipoPlanNue").focus();
         return false;
     } 
-//    if($("#slt_detalleComercial_planAnt").val() == "")
-//    {
-//        FuncionErrores(214);
-//        $("#slt_detalleComercial_planAnt").focus();
-//        return false;
-//    }
     if($("#slt_detalleComercial_PlanNue").val() == "")
     {
         FuncionErrores(215);
         $("#slt_detalleComercial_PlanNue").focus();
         return false;
     }
-//    if($("#txt_detalleComercial_cargoFijoAnt").val() == "")
-//    {
-//        FuncionErrores(216);
-//        $("#txt_detalleComercial_cargoFijoAnt").focus();
-//        return false;
-//    }
     if(validarNum.test($("#txt_detalleComercial_cargoFijoAnt").val()))
     {
         FuncionErrores(202);
@@ -283,12 +317,6 @@ function DetalleActividadComercial(id)
         $("#txt_detalleComercial_cargoFijoNue").focus();
         return false;
     }
-//    if($("#slt_detalleComercial_portPPHAB").val() == "")
-//    {
-//        FuncionErrores(218);
-//        $("#slt_detalleComercial_portPPHAB").focus();
-//        return false;
-//    }
     if($("#txt_detalleComercial_arpu").val() == "")
     {
         FuncionErrores(219);
@@ -299,12 +327,6 @@ function DetalleActividadComercial(id)
     {
         FuncionErrores(202);
         $("#txt_detalleComercial_arpu").focus();
-        return false;
-    }
-    if( $("#txt_actComercial_nroNegocio").val()== "")
-    {
-        FuncionErrores(203); 
-        $("#txt_actComercial_nroNegocio").focus();
         return false;
     }
     DetalleComercial(id);

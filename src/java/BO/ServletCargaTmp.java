@@ -46,11 +46,12 @@ public class ServletCargaTmp extends HttpServlet {
             HttpSession s = request.getSession();
             Connection _connMy = null;
             String secuencia = request.getParameter("secu");  
-            String negocio = request.getParameter("negocio"); 
+            String correlativo = request.getParameter("correlativo"); 
+            
             try{
                 _connMy = conexionBD.Conectar((String)s.getAttribute("organizacion"));             
                 CallableStatement sp_usu = _connMy.prepareCall("{call sp_CargaTmp(?,?)}");  
-                sp_usu.setLong(1, Long.parseLong(negocio));
+                sp_usu.setLong(1, Long.parseLong(correlativo));
                 sp_usu.setLong(2, Long.parseLong(secuencia));
                 sp_usu.execute();
             }catch(Exception e){

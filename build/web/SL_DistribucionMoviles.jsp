@@ -23,6 +23,7 @@
 <script src="js/CargarCombo.js" type="text/javascript" ></script>
 <script src="js/CRUD_Distribucion.js" type="text/javascript" ></script>
 <script src="js/Funcion_Errores.js" type="text/javascript"></script>
+<script src="js/CargaPlanes.js" type="text/javascript"></script>
 <!-- Librerias Jquery -->
 <script src ="js/jquery-1.10.2.js" type="text/javascript "></script>
 <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
@@ -45,7 +46,7 @@
     String secuencia = request.getParameter("secuencia");
     String nroNegocio = request.getParameter("negocio");
     String tipoClte = request.getParameter("tipoClte");
-    String nroContrato = request.getParameter("nroContrato");
+    String corrCotiza = request.getParameter("correlativo");
     String tipoServicio = request.getParameter("tipoServicio");
     String estado = request.getParameter("estado");
     String tipoNegocio = request.getParameter("tipoNegocio");
@@ -60,28 +61,21 @@
     String supervisor = request.getParameter("supervisor");
     String ultimo = request.getParameter("ultimo");
     String resta = request.getParameter("resta");
+    System.out.println(corrCotiza);
 %>
+<script type="text/javascript">
+    $(document).ready(function (){
+    cargaTipoPlan();
+});
+</script>
+    
 </head>
 <body id="principal">    
     <input type="hidden" id="parametroActComercial" value="<%=parametroActComercial%>" />
     <input type="hidden" id="secuencia" value="<%=secuencia%>" />
     <input type="hidden" id="cantidad" value="<%=cantidad%>" />
-    <input type="hidden" id="tmpCantidadTotal" value="<%=resta%>" />
-    <input type="hidden" id="nroNegocio" value="<%=nroNegocio%>" />    
-    <input type="hidden" id="tipoClte" value="<%=tipoClte%>" />
-    <input type="hidden" id="nroContrato" value="<%=nroContrato%>" />
-    <input type="hidden" id="tipoServicio" value="<%=tipoServicio%>" />
-    <input type="hidden" id="estado" value="<%=estado%>" />
-    <input type="hidden" id="tipoNegocio" value="<%=tipoNegocio%>" />
-    <input type="hidden" id="serviMovil" value="<%=serviMovil%>" />
-    <input type="hidden" id="caso" value="<%=caso%>" />
-    <input type="hidden" id="nomCli" value="<%=nomCli%>" />
-    <input type="hidden" id="rutCli" value="<%=rutCli%>" />
-    <input type="hidden" id="comentario" value="<%=comentario%>" />
-    <input type="hidden" id="fecha" value="<%=fecha%>" />
-    <input type="hidden" id="nomEje" value="<%=nomEje%>" />
-    <input type="hidden" id="rv" value="<%=rv%>" />
-    <input type="hidden" id="supervisor" value="<%=supervisor%>" />        
+    <input type="hidden" id="tmpCantidadTotal" value="<%=resta%>" />    
+    <input type="hidden" id="corrCotiza" value="<%=corrCotiza%>" />      
     <table class="header" >
     <tr>
         <td id="tablaDistribucion" rowspan="11">
@@ -137,22 +131,8 @@
             Tipo Plan Antiguo:
         </td>
         <td>
-            <select id="slt_detalleComercial_tipoPlanAnt" onchange="cargaPlanAntiguo()">
-                <option value="">--Seleccione--</option>               
-                <%                    
-                    String tabla = "Tipo Plan Antiguo";                                        
-                    CallableStatement sp_Carga = _connMy.prepareCall("{call sp_CargaCombo(?,'','')}");
-                    sp_Carga.setString(1,tabla);
-                    sp_Carga.execute();
-                    final ResultSet CargarTipoAntiguo = sp_Carga.getResultSet();                                                   
-                    while(CargarTipoAntiguo.next())
-                    {             
-                %>
-                        <option value="<%=CargarTipoAntiguo.getString("descripcion")%>"><%=CargarTipoAntiguo.getString("descripcion")%></option>
-                <%                                                       
-                    }
-                    
-                %>
+            <select id="slt_detalleComercial_tipoPlanAnt" onchange="loadPlanAntiguo()">
+                <option value="">--Seleccione--</option>                        
             </select>
         </td>        
     </tr>
@@ -161,7 +141,7 @@
             Plan Antiguo:
         </td>
         <td>
-            <select id="slt_detalleComercial_planAnt">
+            <select onchange="loadCargoFijoAntiguo()" id="slt_detalleComercial_planAnt">
                 <option value="">--Seleccione--</option>                
             </select>
         </td>
@@ -177,21 +157,8 @@
             Tipo Plan Nuevo:
         </td>
         <td>
-            <select id="slt_detalleComercial_tipoPlanNue" onchange="cargaPlanNuevo()">
-                <option value="">--Seleccione--</option>
-                <%
-                    tabla = "Tipo Plan Nuevo";                                        
-                    sp_Carga = _connMy.prepareCall("{call sp_CargaCombo(?,'','')}");
-                    sp_Carga.setString(1,tabla);
-                    sp_Carga.execute();
-                    final ResultSet CargarTipoNuevo = sp_Carga.getResultSet();                                                   
-                    while(CargarTipoNuevo.next())
-                    {             
-                %>
-                        <option value="<%=CargarTipoNuevo.getString("descripcion")%>"><%=CargarTipoNuevo.getString("descripcion")%></option>
-                <%                                                       
-                    }
-                %>
+            <select id="slt_detalleComercial_tipoPlanNue" onchange="loadPlanNuevo()">
+                <option value="">--Seleccione--</option>               
             </select>
         </td>				
     </tr>
@@ -200,7 +167,7 @@
             Plan Nuevo:
         </td>
         <td>
-            <select  id="slt_detalleComercial_PlanNue">
+            <select onchange="loadCargoFijoNuevo()"  id="slt_detalleComercial_PlanNue">
                 <option value="">--Seleccione--</option>                
                 <option></option>
             </select>

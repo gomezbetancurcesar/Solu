@@ -61,9 +61,7 @@ public class ServletDistribucion extends HttpServlet {
             String nroMovil = request.getParameter("nroMovil");
             String filas = request.getParameter("filas");
             String secuencia = request.getParameter("secuencia");
-            String negocio = request.getParameter("nroNegocio");  
-            System.out.println(uf);
-            System.out.println(portPPHab);
+            String corrCotiza = request.getParameter("correlativo");
             String arrayTipoAnt [] = tipoAntiguo.split(",");
             String arrayPlanAnt [] = planAntiguo.split(",");
             String arrayCargoAnt [] = CargoAnt.split(",");            
@@ -74,65 +72,63 @@ public class ServletDistribucion extends HttpServlet {
             String arrayArpu [] = arpu.split(",");
             String arrayUf [] = uf.split(",");
             String arrayPortPPHab [] = portPPHab.split(",");
-            int movil = Integer.parseInt(nroMovil);            
+            int movil = Integer.parseInt(nroMovil);         
             try{                                
                 _connMy = conexionBD.Conectar((String)s.getAttribute("organizacion")); 
                 double arrayDouble = 0;
+                System.out.println("Filas: "+ filas);
+                System.out.println("Largo array: "+arrayTipoAnt.length);
+                System.out.println("Tipo Antiguo: "+tipoAntiguo);
                 for (int i = 0; i < Integer.parseInt(filas) ; i++) 
                 {                                                            
                     sp_usu = _connMy.prepareCall("{call sp_cargarTmpDistri(?,?,?,?,?,?,?,?,?,?,?,?,?)}");
                     sp_usu.setInt(1,movil);
-                    if(tipoAntiguo.equals(""))
-                    {
-                        sp_usu.setString(2, "");
-                        sp_usu.setString(3, "");
-                    }else
-                    {
+                    
+                    try{
                         sp_usu.setString(2, arrayTipoAnt[i]);
                         sp_usu.setString(3, arrayPlanAnt[i]);
+                    }catch(Exception e){
+                        sp_usu.setString(2, "");
+                        sp_usu.setString(3, "");
                     }
+                    
                     sp_usu.setString(4, arrayTipoNue[i]);
                     sp_usu.setString(5, arrayPlanNue[i]);
                     sp_usu.setInt(6, Integer.parseInt(arrayCant[i]));
-                    sp_usu.setInt(7, Integer.parseInt(negocio));
+                    sp_usu.setInt(7, Integer.parseInt(corrCotiza));
                     sp_usu.setInt(8, Integer.parseInt(secuencia));
-                    if(uf.equals(""))
-                    {
-                        sp_usu.setDouble(9,0);
-                    }
-                    else
-                    {
+                    
+                    try {
                         arrayDouble = Double.parseDouble(arrayUf[i]);
                         sp_usu.setDouble(9,arrayDouble);
+                    } catch (Exception e) {
+                        sp_usu.setDouble(9,0);
                     }
                     
-                    if(CargoAnt.equals(""))
-                    {
-                        sp_usu.setInt(10, 0);
-                        
-                    }
-                    else
-                    {
+                    try {
                         sp_usu.setInt(10, Integer.parseInt(arrayCargoAnt[i]));
+                    } catch (Exception e) {
+                        sp_usu.setInt(10, 0);
                     }
+                    
                     sp_usu.setInt(11, Integer.parseInt(arrayCargoNue[i]));
-                    if(portPPHab.equals(""))
-                    {
+                    
+                    try {
+                        sp_usu.setString(12, arrayPortPPHab[i]);
+                    } catch (Exception e) {
                         sp_usu.setString(12, "");
                     }
-                    else
-                    {
-                        sp_usu.setString(12, arrayPortPPHab[i]);
-                    }
+                    
                     sp_usu.setInt(13, Integer.parseInt(arrayArpu[i]));                    
                     sp_usu.execute();  
                     
                     movil = movil + Integer.parseInt(arrayCant[i]);
                 }
             }catch(Exception e){
-                _connMy.rollback();
+              System.out.println("ERROR "+e.getMessage());
+//                _connMy.rollback();
                 e.printStackTrace();
-                System.out.println("ERROR "+e.getMessage());
+                
               }
               finally{
                 _connMy.close();

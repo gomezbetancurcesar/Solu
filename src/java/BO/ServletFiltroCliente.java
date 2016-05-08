@@ -44,6 +44,10 @@ public class ServletFiltroCliente extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             HttpSession s = request.getSession(); 
             Connection _connMy = null;
+            /*modificacion Felix, filtro de usuarios por tipo de usuario*/
+            String tipoUser = (String)s.getAttribute("tipo");
+            String rut = (String)s.getAttribute("rut");;
+            
             String nomEje = request.getParameter("nomEje");            
             String estado = request.getParameter("estado");
             String rutCli = request.getParameter("rutCli");
@@ -57,15 +61,19 @@ public class ServletFiltroCliente extends HttpServlet {
             System.out.println(estado);
             System.out.println(rutCli);
             System.out.println(nomCli);
+            System.out.println(tipoUser);
+            System.out.println(rut);
 //            System.out.println(contacto);
 //            System.out.println(direccion);
             
             _connMy =conexionBD.Conectar((String)s.getAttribute("organizacion"));            
-            CallableStatement sp_filtro = _connMy.prepareCall("{call sp_filtro_cliente(?,?,?,?)}");
+            CallableStatement sp_filtro = _connMy.prepareCall("{call sp_filtro_cliente(?,?,?,?,?,?)}");
             sp_filtro.setString(1,nomEje);
             sp_filtro.setString(2,estado);
             sp_filtro.setString(3,rutCli);
             sp_filtro.setString(4,nomCli);
+            sp_filtro.setString(5,tipoUser);
+            sp_filtro.setString(6,rut);
                     
             sp_filtro.execute();
             final ResultSet rs = sp_filtro.getResultSet();            

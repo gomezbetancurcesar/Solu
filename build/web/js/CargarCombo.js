@@ -7,12 +7,15 @@ function cargaServicio()
         data: "tipoServicio="+tipo,
         type : 'POST',
         dataType : "html",
-        success : function(data) {		
+        success : function(data) {
+            
+            //$('#slt_actComercial_serviMovil').html("<option value=''>--Seleccione--</option>"+data);
+            
             $("#slt_actComercial_serviMovil").find("option").remove(); 
-            $("#slt_actComercial_serviMovil").append('<option value="" selected>--Seleccione--</option>');
+            $("#slt_actComercial_serviMovil").append('<option value="-1" selected>--Seleccione--</option>');
             if($("#parametroActComercial").val() !=  1)
             {
-                if(tipo != "")
+                if(tipo != "" && tipo == $("#tipoServicioMovil").val())
                 {
                     $("#slt_actComercial_serviMovil").append(data);
                     $("#slt_actComercial_serviMovil").val($("#tipServicio").val());
@@ -22,59 +25,60 @@ function cargaServicio()
             {
                 if(tipo != "")
                 {
-                    $("#slt_actComercial_serviMovil").append('<option value="" selected>--Seleccione--</option>');
+//                    $("#slt_actComercial_serviMovil").append('<option value="" selected>--Seleccione--</option>');
                     $("#slt_actComercial_serviMovil").append(data);                    
                 }
             }
         }
     });
 }
-function cargaPlanAntiguo(plan)
-{    
-    var tipo = "";
-    tipo = $("#slt_detalleComercial_tipoPlanAnt").val();    
-    $.ajax({
-        url : 'ServletCargaPlanAntiguo', 
-        data: "tipoPlanAntiguo="+tipo,
-        type : 'POST',
-        dataType : "html",
-        success : function(data) {		
-            $("#slt_detalleComercial_planAnt").find("option").remove();            
-            $("#slt_detalleComercial_planAnt").append('<option value="" selected>--Seleccione--</option>');
-            if($("#habilitaDetCom").val() == 1)
-            {   
-                if(tipo != "")
+
+function cargaRv()
+    {
+       var ejecutivo = $("#slt_actComercial_ejecutivo").val();  
+       var tipo = $("#tipoUser").val();
+        var rut = $("#rutUsuario").val();
+       $.ajax({
+            url : 'ServletCargaRv', 
+            data: "ejecutivo="+ejecutivo+"&rut="+rut+"&tipoUser="+tipo,
+            type : 'POST',
+            dataType : "html",
+            success : function(data) {
+                var campos = [];
+                $("#slt_actComercial_TipoNegocio").removeAttr("disabled");
+                campos = data.split("|");
+                $("#txt_actComercial_rv").val(campos[0]);
+                $("#txt_actComercial_rv").attr("disabled","disabled"); 
+                $("#slt_actComercial_TipoNegocio").val(campos[1]);
+                if(campos[1] == "Captura")
                 {
-                    $("#slt_detalleComercial_planAnt").append(data);
-                    $("#slt_detalleComercial_planAnt").val(plan);
+                    $("#slt_actComercial_TipoNegocio").attr("disabled","disabled");
+                    $("#slt_actComercial_TipoNegocio").children().remove();
+                    $("#slt_actComercial_TipoNegocio").append("<option value='Captura'>Captura</option>");
                 }
-            }
-            if($("#habilitaDetCom").val() != 1)
-            {
-                if(tipo != "")
+                if(campos[1] == "Desarrollo Peque\u00f1a Empresa")
                 {
-                    $("#slt_detalleComercial_planAnt").append(data);
+                    $("#slt_actComercial_TipoNegocio").removeAttr("disabled");
+                    //Sacar las opciones
+                    $("#slt_actComercial_TipoNegocio").children().remove();
+                    $("#slt_actComercial_TipoNegocio").append("<option value='Captura'>Captura</option>");
+                    $("#slt_actComercial_TipoNegocio").append("<option selected value='Desarrollo Peque\u00f1a Empresa'>Desarrollo Peque\u00f1a Empresa</option>");                    
                 }
+                if(campos[1] == "Desarrollo Mediana Empresa")
+                {
+                    $("#slt_actComercial_TipoNegocio").removeAttr("disabled");
+                    //Sacar las opciones
+                    $("#slt_actComercial_TipoNegocio").children().remove();
+                    $("#slt_actComercial_TipoNegocio").append("<option value='Captura'>Captura</option>");
+                    $("#slt_actComercial_TipoNegocio").append("<option selected value='Desarrollo Mediana Empresa'>Desarrollo Mediana Empresa</option>");                    
+                }
+                                              
+                $("#txt_actComercial_supervisor").val(campos[2]);
+                $("#txt_actComercial_supervisor").attr("disabled","disabled");
+                
+                
             }
-        }
-    });
-}
-function cargaPlanNuevo(plan)
-{
-    var tipo = $("#slt_detalleComercial_tipoPlanNue").val();    
-    $.ajax({
-        url : 'ServletCargaPlanNuevo', 
-        data: "tipoPlanNuevo="+tipo,
-        type : 'POST',
-        dataType : "html",
-        success : function(data) {		
-            $("#slt_detalleComercial_PlanNue").find("option").remove();
-            $("#slt_detalleComercial_PlanNue").append('<option value="">--Seleccione--</option>');            
-                if(tipo != "")
-                {                                        
-                    $("#slt_detalleComercial_PlanNue").append(data);
-                    $("#slt_detalleComercial_PlanNue").val(plan);
-                }               
-        }
-    });
-}
+        });
+    }
+    
+ 

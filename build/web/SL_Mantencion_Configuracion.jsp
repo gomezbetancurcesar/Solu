@@ -186,11 +186,11 @@ pageEncoding="ISO-8859-1"%>
                                                     Statement stmt = null;
                                                     ResultSet rsStmt = null;
                                                     stmt = _connMy.createStatement();
-                                                    rsStmt = stmt.executeQuery("SELECT rut FROM sl_mae_usuarios");                                                                                         
+                                                    rsStmt = stmt.executeQuery("SELECT rut,nombre_user FROM sl_mae_usuarios where tipo = 'Supervisor'");                                                                                         
                                                     while(rsStmt.next())
                                                     {             
                                                 %>
-                                                        <option value="<%=rsStmt.getString("rut")%>"><%=rsStmt.getString("rut")%></option>
+                                                        <option value="<%=rsStmt.getString("rut")%>"><%=rsStmt.getString("nombre_user")%></option>
                                                 <%                                                       
                                                     }                                                     
                                                 %>
@@ -279,8 +279,7 @@ pageEncoding="ISO-8859-1"%>
                                             <select id="slt_tabla_mae" name="slt_tabla_mae">
                                                 <option value="">--Selecione--</option>
                                                 <%
-                                                    String CargaTabla = "maeTabla";
-                                                    
+                                                    String CargaTabla = "maeTabla";                                                    
                                                     CallableStatement sp_Carga = _connMy.prepareCall("{call sp_ConsultaMaeTabla(?)}");
                                                     sp_Carga.setString(1,CargaTabla);
                                                     sp_Carga.execute();

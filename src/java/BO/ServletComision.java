@@ -82,30 +82,32 @@ public class ServletComision extends HttpServlet {
                 sp_usu.execute();
                 
                 Date sqlDateCierre= new Date(formato.parse(fechaCierre).getTime()); 
-                sp_usu = _connMy.prepareCall("{call sp_actividad_comercial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+                sp_usu = _connMy.prepareCall("{call sp_actividad_comercial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
                 sp_usu.setString(1,"cierre");
-                sp_usu.setString(2,"");
-                sp_usu.setDate(3,sqlDateCierre);
+                sp_usu.setLong(2,0);
+                sp_usu.setString(3,"");
                 sp_usu.setString(4,"");
-                sp_usu.setString(5,"");
+                sp_usu.setDate(5,sqlDateCierre);
                 sp_usu.setString(6,"");
                 sp_usu.setString(7,"");
                 sp_usu.setString(8,"");
-                sp_usu.setLong(9,0);
+                sp_usu.setString(9,"");
                 sp_usu.setLong(10,0);
                 sp_usu.setLong(11,0);
-                sp_usu.setString(12, "");
+                sp_usu.setLong(12,0);
                 sp_usu.setString(13, "");
-                sp_usu.setInt(14,0);
+                sp_usu.setString(14, "");
                 sp_usu.setInt(15,0);
                 sp_usu.setInt(16,0);
-                sp_usu.setString(17,"");
+                sp_usu.setInt(17,0);
                 sp_usu.setString(18,"");
                 sp_usu.setString(19,"");
                 sp_usu.setString(20,"");
-                sp_usu.setString(21,estadoCierre);
-                sp_usu.setString(22,fechaInicio);
-                sp_usu.setString(23,fechaFinal);            
+                sp_usu.setString(21,"");
+                sp_usu.setString(22,estadoCierre);
+                sp_usu.setString(23,fechaInicio);
+                sp_usu.setString(24,fechaFinal);   
+                sp_usu.setLong(25,0); 
                 sp_usu.execute();
             }else
             {
