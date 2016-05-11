@@ -1,5 +1,16 @@
 function ActividadComercial(id,secuencia){
-    var estadosExcepciones = ["Oportunidad", "Cerrada 80", "Perdida", "Propuesta"];
+    //Capturamos las actividades que NO se deben validar la cantidad de móviles
+    var estadosExcepciones = [];
+    var cargaExcepciones = false;
+    $.ajax({
+        url: "ServletExcepActCom",
+        async: false,
+        success: function (actividadExcepciones){
+            estadosExcepciones = actividadExcepciones.split("___");
+            cargaExcepciones = true;
+        }
+    });
+    
     var mod = "";
     if (id === 1 || id === 4)
     {	
@@ -26,6 +37,8 @@ function ActividadComercial(id,secuencia){
     var estado = $("#slt_actComercial_status").val();
     var comentario = $("#txa_actComercial_comentario").val();
     var corrCotiza = $("#txt_actComercial_corrCotiza").val();
+    alert(corrCotiza);
+    return false;
     var tipoNegocio = "";
     var supervisor = $("#txt_actComercial_supervisor").val();
     if($("#tipoUser").val() == "Usuario" || $("#tipoUser").val() == "Backoffice")
@@ -45,40 +58,41 @@ function ActividadComercial(id,secuencia){
         crm = "no";
     }
     
-    if(cantMovil != fila && $.inArray(estado, estadosExcepciones) < 0)
-    {
-        FuncionErrores(226);
-        $("#txt_actComercial_cantMovil").focus();
-        return false;
-    }
-    
-    
-    $.ajax({
-        url : 'ServletSPActividadComercial', 
-        data : "opcion_ActividadComercial="+mod+"&txt_actComercial_rv="+rv+"&txt_actComercial_rutcli="+rutCli+"&slt_actComercial_tipoServicio="+tipoServicio+
-                "&slt_actComercial_ejecutivo="+nomEje+"&txt_actComercial_nomCli="+nomCli+"&txt_actComercial_fecha="+fecha+"&txt_actComercial_caso="+caso+
-                "&txt_actComercial_cantMovil="+cantMovil+"&slt_actComercial_serviMovil="+ServicioMovil+"&txt_actComercial_nroNegocio="+nroNegocio+"&chkBox_actComercial_CRM="+crm+
-                "&slt_actComercial_tipoClte="+tipoCli+"&slt_actComercial_status="+estado+"&txa_actComercial_comentario="+comentario+"&txt_actComercial_corrCotiza="+corrCotiza+
-                "&slt_actComercial_TipoNegocio="+tipoNegocio+"&seq="+secuencia+"&slt_actComercial_supervisor="+supervisor,
-        type : 'POST',
-        dataType : "html",
-        success : function(data){
-                if(data != "")
-                {
-                    FuncionErrores(222);      
-                    if(fila >= 1)
+    if(cargaExcepciones){
+        if(cantMovil != fila && $.inArray(estado, estadosExcepciones) < 0)
+        {
+            FuncionErrores(226);
+            $("#txt_actComercial_cantMovil").focus();
+            return false;
+        }
+
+        $.ajax({
+            url : 'ServletSPActividadComercial', 
+            data : "opcion_ActividadComercial="+mod+"&txt_actComercial_rv="+rv+"&txt_actComercial_rutcli="+rutCli+"&slt_actComercial_tipoServicio="+tipoServicio+
+                    "&slt_actComercial_ejecutivo="+nomEje+"&txt_actComercial_nomCli="+nomCli+"&txt_actComercial_fecha="+fecha+"&txt_actComercial_caso="+caso+
+                    "&txt_actComercial_cantMovil="+cantMovil+"&slt_actComercial_serviMovil="+ServicioMovil+"&txt_actComercial_nroNegocio="+nroNegocio+"&chkBox_actComercial_CRM="+crm+
+                    "&slt_actComercial_tipoClte="+tipoCli+"&slt_actComercial_status="+estado+"&txa_actComercial_comentario="+comentario+"&txt_actComercial_corrCotiza="+corrCotiza+
+                    "&slt_actComercial_TipoNegocio="+tipoNegocio+"&seq="+secuencia+"&slt_actComercial_supervisor="+supervisor,
+            type : 'POST',
+            dataType : "html",
+            success : function(data){
+                    if(data != "")
                     {
-                       $("#btn_detalleComercial_limpiaTabla").show();
-                    }                        
-                    $("#txt_actComercial_corrCotiza").focus();
-                    return false;
-                }
-                else
-                {
-                    location.href="SL_Seleccion_ActividadComercial.jsp";
-                }
-        }        
-    });
+                        FuncionErrores(222);      
+                        if(fila >= 1)
+                        {
+                           $("#btn_detalleComercial_limpiaTabla").show();
+                        }                        
+                        $("#txt_actComercial_corrCotiza").focus();
+                        return false;
+                    }
+                    else
+                    {
+                        location.href="SL_Seleccion_ActividadComercial.jsp";
+                    }
+            }        
+        });
+    }
 }
 
 function ModificaActComercial(id)
@@ -88,6 +102,7 @@ function ModificaActComercial(id)
     {
         $("#filaTablaActComercial"+id).css("background-color","#58FAF4").removeClass("alt");        
         $("#habilitaActCom").val("1");
+        $("#filaTablaActComercial"+id).addClass("seleccionado");
         var neg =  $("#ActCom_corrCotiza"+id).text();        
         var caso = $("#ActCom_Caso"+id).text();
         if($("#ActCom_estadoCierre"+id).text() == "DE")
@@ -113,6 +128,7 @@ function desmarca_registro_actividadComercial()
             $("#filaTablaActComercial"+i).css("background-color","white");
         }
     }
+    $(".seleccionado").removeClass("seleccionado");
     $("#btn_actComercial_Modifica").show();
     $("#habilitaActCom").val("0");
 }

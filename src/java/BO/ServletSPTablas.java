@@ -50,7 +50,7 @@ public class ServletSPTablas extends HttpServlet {
             String rel1 = request.getParameter("slt_tabla_rel1");
             String rel2 = request.getParameter("slt_tabla_rel2");
             String descripcion = request.getParameter("txt_tabla_descripcion");
-            String id = request.getParameter("hid_tabla_id");            
+            String id = request.getParameter("hid_tabla_id");
             try{
                 
                 _connMy = conexionBD.Conectar((String)s.getAttribute("organizacion"));              

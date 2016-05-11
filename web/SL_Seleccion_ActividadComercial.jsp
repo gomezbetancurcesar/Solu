@@ -94,14 +94,25 @@ $(document).ready(function(){
     });
 });
 function seleccion_registro_actividadComercial(id){
+    var id = parseInt(id);
     var numero = $("#corrCotiza").val();    
-    var secu = $("#secu").val();        
+    var secu = $("#secu").val();
     if($("#habilitaActCom").val() == 0 || numero == null )
     {
         FuncionErrores(239);
         return false;
     }
-        
+    
+    var estado = $(".seleccionado").find("[id^='ActCom_estado']").first().text();
+    estado = $.trim(estado);
+    
+    var bloqueados = $("#bloqueados").val();
+    bloqueados = bloqueados.split("___");
+    
+    if(id == 3 && $.inArray(estado, bloqueados) >= 0){
+        FuncionErrores(246);
+        return false;
+    }
     $.ajax({
         url : 'ServletCargaTmp', 
         data : "secu="+secu+"&correlativo="+numero,
@@ -110,12 +121,13 @@ function seleccion_registro_actividadComercial(id){
         success : function(data) {
             location.href='SL_Actualiza_ActividadComercial.jsp?par='+id+'&correlativo='+numero+'&secuencia='+secu;                
         }
-    });    
+    });
 }
 </script>
 </head>
 <body id="principal"> 
 <input type="hidden" id="secu" value="<%=secu%>" />
+<input type="hidden" id="bloqueados" value="" />
     <table id="header2">
         <tr>
             <td colspan="5">
@@ -408,5 +420,16 @@ function seleccion_registro_actividadComercial(id){
         </tr>
     </table>                            
 </body>
+<script>
+    $(document).ready(function(){
+        //Cargamos los estados que estan bloqueados de edicion segun el tipo de usuario
+         $.ajax({
+            url: "ServletBloqueoModActividad",
+            success: function(bloqueados){
+                $("#bloqueados").val(bloqueados);
+            }
+        });
+    });
+</script>
 </html>
     

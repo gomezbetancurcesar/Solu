@@ -66,7 +66,7 @@ public class ServletSPDetalleActComer extends HttpServlet {
             {
                 ufe = Double.parseDouble(uf);
             }
-            int movil = Integer.parseInt(nroMovil);            
+            long movil = Long.parseLong(nroMovil);   
             if(cargoFijoAnt.equals(""))
             {
                 cargoFijoAnt = "0";
@@ -75,7 +75,7 @@ public class ServletSPDetalleActComer extends HttpServlet {
                 _connMy = conexionBD.Conectar((String)s.getAttribute("organizacion"));                            
                 CallableStatement sp_usu = _connMy.prepareCall("{call sp_detalleComer_Tmp(?,?,?,?,?,?,?,?,?,?,?,?,?)}");
                 sp_usu.setString(1,opcion_Detalle_ActividadComercial);
-                sp_usu.setInt(2,movil);
+                sp_usu.setLong(2,movil);
                 sp_usu.setDouble(3,ufe);
                 sp_usu.setString(4,tipoPlanAnt);
                 sp_usu.setString(5,tipoPlanNue);

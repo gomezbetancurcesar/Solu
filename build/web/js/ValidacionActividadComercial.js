@@ -1,5 +1,3 @@
-
-
 function FuncionActividadComercial(id,secuencia){
     var validarRut = new RegExp("[^0-9kK-]"); 
     var validarNum = new RegExp("[^0-9]");    

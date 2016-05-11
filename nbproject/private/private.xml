@@ -4,7 +4,10 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/equipo-desarrollo-2/Documents/NetBeansProjects/SolutelGit/web/SL_Actualiza_ActividadComercial.jsp</file>
-            <file>file:/C:/Users/equipo-desarrollo-2/Documents/NetBeansProjects/SolutelGit/web/SL_Seleccion_ActividadComercial.jsp</file>
+            <file>file:/C:/Users/equipo-desarrollo-2/Documents/NetBeansProjects/SolutelGit/web/js/CRUD_Mantenedor.js</file>
+            <file>file:/C:/Users/equipo-desarrollo-2/Documents/NetBeansProjects/SolutelGit/src/java/BO/ServletSPActividadComercial.java</file>
+            <file>file:/C:/Users/equipo-desarrollo-2/Documents/NetBeansProjects/SolutelGit/web/js/ValidacionActividadComercial.js</file>
+            <file>file:/C:/Users/equipo-desarrollo-2/Documents/NetBeansProjects/SolutelGit/web/js/CRUD_ActividadComercial.js</file>
         </group>
     </open-files>
 </project-private>
