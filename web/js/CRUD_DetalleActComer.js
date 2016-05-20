@@ -1,7 +1,6 @@
 function DetalleComercial(id)
 {    
     var nroMovil = "";
-    var uf= "";
     var tipoPlanAnt = "";
     var tipoPlanNue = "";
     var planAntiguo = "";
@@ -14,7 +13,6 @@ function DetalleComercial(id)
     var secuencia ="";
     var parametro = "";
     nroMovil = $("#txt_detalleComercial_nroMovil").val();
-    uf = $("#txt_detalleComercial_uf").val();
     tipoPlanAnt =  $("#slt_detalleComercial_tipoPlanAnt").val();
     tipoPlanNue = $("#slt_detalleComercial_tipoPlanNue").val();
     planAntiguo = $("#slt_detalleComercial_planAnt").val();
@@ -28,7 +26,7 @@ function DetalleComercial(id)
     parametro = $("#parametroActComercial").val();
     $.ajax({
         url : 'ServletSPDetalleActComer', 
-        data : "opcion_Detalle_ActividadComercial="+id+"&txt_detalleComercial_nroMovil="+nroMovil+"&txt_detalleComercial_uf="+uf+"&slt_detalleComercial_tipoPlanAnt="+tipoPlanAnt+
+        data : "opcion_Detalle_ActividadComercial="+id+"&txt_detalleComercial_nroMovil="+nroMovil+"&slt_detalleComercial_tipoPlanAnt="+tipoPlanAnt+
                 "&slt_detalleComercial_tipoPlanNue="+tipoPlanNue+"&slt_detalleComercial_planAnt="+planAntiguo+
                 "&slt_detalleComercial_PlanNue="+planNuevo+"&txt_detalleComercial_cargoFijoAnt="+cargoFijoAnt+
                 "&txt_detalleComercial_cargoFijoNue="+cargoFijoNue+"&slt_detalleComercial_portPPHAB="+port_pp_hab+
@@ -47,7 +45,6 @@ function DetalleComercial(id)
             $("#slt_detalleComercial_planAnt").val("");
             $("#txt_detalleComercial_cargoFijoAnt").val("");
             $("#slt_detalleComercial_portPPHAB").val("");
-            $("#txt_detalleComercial_uf").val("");
             $("#slt_detalleComercial_tipoPlanNue").val("");
             $("#slt_detalleComercial_PlanNue").val("");
             $("#txt_detalleComercial_cargoFijoNue").val("");
@@ -56,7 +53,7 @@ function DetalleComercial(id)
 //            $("#txt_actComercial_nroNegocio").attr("readonly",true);
             $("#txt_detalleComercial_nroMovil").attr("readonly",false);
             $("#DetalleModifica").hide();
-            $("#DetalleElimina").hide();
+            $("#DetalleElimina").show();
             $("#btn_detalleComercial_cancela").hide();
             $("#habilitaDetCom").val("0");
 //            if(fila == 0 && id == 'elimina' && parametro == 1 || parametro == 4)
@@ -75,7 +72,6 @@ function ModificaDetalleComercial(id)
         $("#filaTablaDetalle"+id).css("background-color","#58FAF4").removeClass("alt");
         $("#txt_detalleComercial_nroMovil").val($("#actComerDet_nroMovil"+id).text());
         $("#slt_detalleComercial_portPPHAB").val($("#actComerDet_portPPHab"+id).text());
-        $("#txt_detalleComercial_uf").val($("#actComerDet_uf"+id).text());
         $("#txt_detalleComercial_arpu").val($("#actComerDet_arpu"+id).text());
         $("#txt_detalleComercial_nroMovil").attr("readonly",true);
         $("#DetalleModifica").show();
@@ -110,7 +106,6 @@ function CancelaDetalle()
     $("#slt_detalleComercial_planAnt").val("");
     $("#txt_detalleComercial_cargoFijoAnt").val("");
     $("#slt_detalleComercial_portPPHAB").val("");
-    $("#txt_detalleComercial_uf").val("");
     $("#slt_detalleComercial_tipoPlanNue").val("");
     $("#slt_detalleComercial_PlanNue").val("");
     $("#txt_detalleComercial_cargoFijoNue").val("");

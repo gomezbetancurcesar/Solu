@@ -10,7 +10,6 @@ function guardaDistribucion()
     var cant = [];
     var cargoAntiguo = [];
     var cargoNuevo = [];
-    var uf = [];
     var arpu = [];
     var portPPHAB = [];
     var secuencia = $("#secuencia").val();
@@ -36,10 +35,6 @@ function guardaDistribucion()
         }
         tipoNuevo.push($("#Distri_tipoNue"+i).text());        
         planNuevo.push($("#Distri_planNue"+i).text());
-        if($("#Distri_uf"+i).text() != "")
-        {
-            uf.push($("#Distri_uf"+i).text());
-        }        
         arpu.push($("#Distri_arpu"+i).text());
         if($("#Distri_portPPHab"+i).text()!= "")
         {
@@ -66,7 +61,7 @@ function guardaDistribucion()
         data: "arrayCantidad="+cant+"&arrayTipoAnt="+tipoAntiguo+"&arrayPlanAnt="+planAntiguo+"&arrayTipoNue="+tipoNuevo+"&arrayPlanNue="+planNuevo+
                 "&filas="+nroFilas+"&nroMovil="+nroMovil+"&correlativo="+corrCotiza+"&secuencia="+secuencia+
                 "&arrayCargoAntiguo="+cargoAntiguo+"&arrayCargoNuevo="+cargoNuevo+
-                "&arrayUF="+uf+"&arrayArpu="+arpu+"&arrayportPPHAB="+portPPHAB,
+                "&arrayArpu="+arpu+"&arrayportPPHAB="+portPPHAB,
         type : 'POST',
         dataType : "html",
         success : function(data) {
@@ -100,7 +95,6 @@ function TablaDistribucion(id)
     var cantidad = $("#txt_distribucion_cantidad").val();
     var cargoAntiguo = $("#txt_distribucion_cargoAnt").val();
     var cargoNuevo = $("#txt_distribucion_cargoNue").val();
-    var uf = $("#txt_distribucion_uf").val();
     var arpu = $("#txt_distribucion_arpu").val();
     var portPPHAB = $("#slt_distribucion_portPPHAB").val();
     var cantTotal = ""; 
@@ -121,7 +115,6 @@ function TablaDistribucion(id)
             tabla += "<td id='Distri_tipoNue"+fila+"'>"+tipoNuevo+"</td>";
             tabla += "<td id='Distri_planNue"+fila+"'>"+planNuevo+"</td>";
             tabla += "<td id='Distri_cargoNue"+fila+"'>"+cargoNuevo+"</td>";
-            tabla += "<td id='Distri_uf"+fila+"'>"+uf+"</td>";
             tabla += "<td id='Distri_arpu"+fila+"'>"+arpu+"</td>";
             tabla += "<td id='Distri_cantidad"+fila+"'>"+cantidad+"</td>";
             tabla += "</tr>";
@@ -172,7 +165,6 @@ function TablaDistribucion(id)
             tabla += "<td id='Distri_tipoNue"+nro+"'>"+tipoNuevo+"</td>";
             tabla += "<td id='Distri_planNue"+nro+"'>"+planNuevo+"</td>";
             tabla += "<td id='Distri_cargoNue"+nro+"'>"+cargoNuevo+"</td>";
-            tabla += "<td id='Distri_uf"+nro+"'>"+uf+"</td>";
             tabla += "<td id='Distri_arpu"+nro+"'>"+arpu+"</td>";
             tabla += "<td id='Distri_cantidad"+nro+"'>"+cantidad+"</td>";
             tabla += "</tr>";
@@ -207,7 +199,6 @@ function TablaDistribucion(id)
     $("#slt_distribucion_portPPHAB").val("");
     $("#txt_distribucion_cargoAnt").val("");
     $("#txt_distribucion_cargoNue").val("");
-    $("#txt_distribucion_uf").val("");
     $("#txt_distribucion_arpu").val("");        
 }
 function ModificaDistribucion(id)
@@ -229,7 +220,6 @@ function ModificaDistribucion(id)
     $("#txt_distribucion_cargoAnt").val($("#Distri_cargoAnt"+id).text());
     $("#txt_distribucion_cargoNue").val($("#Distri_cargoNue"+id).text());
     $("#txt_distribucion_arpu").val($("#Distri_arpu"+id).text());
-    $("#txt_distribucion_uf").val($("#Distri_uf"+id).text());
     $("#habilitaDetCom").val("1");
     planAntiguo = $("#Distri_planAnt"+id).text();
     planNuevo = $("#Distri_planNue"+id).text();
@@ -280,7 +270,6 @@ function ValidaDistribucion(id)
     var planNuevo = $("#slt_detalleComercial_PlanNue").val();
     var cantidad = $("#txt_distribucion_cantidad").val(); 
     var cargoNuevo = $("#txt_distribucion_cargoNue").val();
-    var uf = $("#txt_distribucion_uf").val();;
     var arpu = $("#txt_distribucion_arpu").val();
     var portPPHAB = $("#slt_distribucion_portPPHAB").val();        
     if(tipoNuevo == "")
@@ -313,18 +302,6 @@ function ValidaDistribucion(id)
 //        $("#txt_distribucion_uf").focus();
 //        return false;
 //    }
-     if(valNumDouble.test(uf))
-    {
-        FuncionErrores(202);
-        $("#txt_distribucion_uf").focus();
-        return false;
-    }
-    if(uf > 999.99)
-    {
-        FuncionErrores(223);
-        $("#txt_distribucion_uf").focus();
-        return false;
-    }
     if(arpu == "")
     {
         FuncionErrores(219);

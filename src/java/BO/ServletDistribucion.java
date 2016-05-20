@@ -56,7 +56,6 @@ public class ServletDistribucion extends HttpServlet {
             String CargoAnt = request.getParameter("arrayCargoAntiguo");
             String CargoNue = request.getParameter("arrayCargoNuevo");
             String arpu = request.getParameter("arrayArpu");
-            String uf = request.getParameter("arrayUF");
             String portPPHab = request.getParameter("arrayportPPHAB");
             String nroMovil = request.getParameter("nroMovil");
             String filas = request.getParameter("filas");
@@ -70,19 +69,18 @@ public class ServletDistribucion extends HttpServlet {
             String arrayPlanNue [] = planNue.split(",");    
             String arrayCargoNue [] = CargoNue.split(",");
             String arrayArpu [] = arpu.split(",");
-            String arrayUf [] = uf.split(",");
             String arrayPortPPHab [] = portPPHab.split(",");
-            int movil = Integer.parseInt(nroMovil);         
+            //int movil = Integer.parseInt(nroMovil);         
+            long movil  = Long.parseLong(nroMovil);
             try{                                
                 _connMy = conexionBD.Conectar((String)s.getAttribute("organizacion")); 
-                double arrayDouble = 0;
                 System.out.println("Filas: "+ filas);
                 System.out.println("Largo array: "+arrayTipoAnt.length);
                 System.out.println("Tipo Antiguo: "+tipoAntiguo);
                 for (int i = 0; i < Integer.parseInt(filas) ; i++) 
                 {                                                            
-                    sp_usu = _connMy.prepareCall("{call sp_cargarTmpDistri(?,?,?,?,?,?,?,?,?,?,?,?,?)}");
-                    sp_usu.setInt(1,movil);
+                    sp_usu = _connMy.prepareCall("{call sp_cargarTmpDistri(?,?,?,?,?,?,?,?,?,?,?,?)}");
+                    sp_usu.setLong(1,movil);
                     
                     try{
                         sp_usu.setString(2, arrayTipoAnt[i]);
@@ -99,27 +97,20 @@ public class ServletDistribucion extends HttpServlet {
                     sp_usu.setInt(8, Integer.parseInt(secuencia));
                     
                     try {
-                        arrayDouble = Double.parseDouble(arrayUf[i]);
-                        sp_usu.setDouble(9,arrayDouble);
+                        sp_usu.setInt(9, Integer.parseInt(arrayCargoAnt[i]));
                     } catch (Exception e) {
-                        sp_usu.setDouble(9,0);
+                        sp_usu.setInt(9, 0);
                     }
+                    
+                    sp_usu.setInt(10, Integer.parseInt(arrayCargoNue[i]));
                     
                     try {
-                        sp_usu.setInt(10, Integer.parseInt(arrayCargoAnt[i]));
+                        sp_usu.setString(11, arrayPortPPHab[i]);
                     } catch (Exception e) {
-                        sp_usu.setInt(10, 0);
+                        sp_usu.setString(11, "");
                     }
                     
-                    sp_usu.setInt(11, Integer.parseInt(arrayCargoNue[i]));
-                    
-                    try {
-                        sp_usu.setString(12, arrayPortPPHab[i]);
-                    } catch (Exception e) {
-                        sp_usu.setString(12, "");
-                    }
-                    
-                    sp_usu.setInt(13, Integer.parseInt(arrayArpu[i]));                    
+                    sp_usu.setInt(12, Integer.parseInt(arrayArpu[i]));                    
                     sp_usu.execute();  
                     
                     movil = movil + Integer.parseInt(arrayCant[i]);

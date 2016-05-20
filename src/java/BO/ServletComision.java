@@ -59,7 +59,7 @@ public class ServletComision extends HttpServlet {
         try{
             _connMy =conexionBD.Conectar((String)s.getAttribute("organizacion"));
             Statement stmt = null;
-            ResultSet rs = null;
+            ResultSet rs = null;                                       
             stmt = _connMy.createStatement();
             String query= "select count(*) as contador from sl_actcomercial_tot where DATE(fecha) between '"+fechaInicio+"' and '"+fechaFinal+"'";
             rs = stmt.executeQuery(query);

@@ -67,6 +67,8 @@ public class ServletSPActividadComercial extends HttpServlet {
             String tipoNegocio = "";
             String secuencia = "";
             String supervisor ="";
+            String uf = "";
+            
             
             String opcion_ActividadComercial = request.getParameter("opcion_ActividadComercial");
             secuencia = request.getParameter("seq");            
@@ -87,6 +89,8 @@ public class ServletSPActividadComercial extends HttpServlet {
             corrCotiza = request.getParameter("txt_actComercial_corrCotiza");
             tipoNegocio = request.getParameter("slt_actComercial_TipoNegocio");   
             supervisor = request.getParameter("slt_actComercial_supervisor"); 
+            uf = request.getParameter("txt_actComercial_uf"); 
+            
             if(caso.equals(""))
             {
                 caso="0";
@@ -115,7 +119,7 @@ public class ServletSPActividadComercial extends HttpServlet {
                 int posicionRutCli = rutCli.indexOf('-'); 
                 int rutCliCorto = Integer.parseInt(rutCli.substring(0,posicionRutCli)); 
                            
-                sp_usu = _connMy.prepareCall("{call sp_actividad_comercial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+                sp_usu = _connMy.prepareCall("{call sp_actividad_comercial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
                 sp_usu.setString(1,opcion_ActividadComercial);
                 sp_usu.setLong(2,Long.parseLong(corrCotiza));
                 sp_usu.setString(3,(String)s.getAttribute("tipo"));
@@ -141,6 +145,7 @@ public class ServletSPActividadComercial extends HttpServlet {
                 sp_usu.setString(23,"");
                 sp_usu.setString(24,"");
                 sp_usu.setLong(25, Long.parseLong(secuencia));
+                sp_usu.setDouble(26, Double.parseDouble(uf));
                 sp_usu.registerOutParameter(1, Types.VARCHAR);
                 sp_usu.execute();
                 String valorSalida = sp_usu.getString(1);                
@@ -151,7 +156,7 @@ public class ServletSPActividadComercial extends HttpServlet {
                 sp_usu = _connMy.prepareCall("{call sp_cargaDetalleComercial(?,?)}");
                 sp_usu.setLong(1, Long.parseLong(corrCotiza));
                 sp_usu.setLong(2, Long.parseLong(secuencia));
-                sp_usu.execute();
+                sp_usu.execute();                
             }catch(Exception e){
                 //_connMy.rollback();
                 e.printStackTrace();

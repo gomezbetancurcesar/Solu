@@ -43,14 +43,12 @@ protected void processRequest(HttpServletRequest request, HttpServletResponse re
             /* TODO output your page here. You may use following sample code. */
             HttpSession s = request.getSession();
             Connection _connMy = null;
-            String campo;
-            String valor;
+            String nroCotizacion;
             
-            campo = request.getParameter("campo");
-            valor = request.getParameter("valor");
+            nroCotizacion = request.getParameter("corrCotizacion");
             try{
                 _connMy = conexionBD.Conectar((String)s.getAttribute("organizacion"));
-                String query = "select count("+campo+") as cantidad from sl_actcomercial_tot where "+campo+" = "+valor;
+                String query = "select count(corr_cotiza) as cantidad from sl_actcomercial_tot where corr_cotiza = "+nroCotizacion;
                 ResultSet rs = _connMy.createStatement().executeQuery(query);
                 
                 Integer cantidad = 0;

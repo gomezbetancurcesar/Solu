@@ -25,7 +25,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author cesar-gomez
+ 
  */
 @WebServlet(name = "ServletExcepActCom", urlPatterns = {"/ServletExcepActCom"})
 public class ServletExcepActCom extends HttpServlet {

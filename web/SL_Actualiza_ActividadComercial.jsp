@@ -1,3 +1,4 @@
+
 <%@page import="java.sql.Connection"%>
 <%@page import="java.sql.Statement"%>
 <%@page import="java.sql.ResultSet"%>
@@ -68,8 +69,8 @@
     String supervisor= "";
     String supervisorSP= "";
     String cantMovilSP ="";
-    String negocio = "";  
-    
+    String negocio = "";
+    String uf = "";
     try
     {
         _connMy = conexionBD.Conectar((String)s.getAttribute("organizacion"));
@@ -113,7 +114,7 @@
         if(!id.equals("1"))
         {
             var = "consulta";        
-            sp_usu = _connMy.prepareCall("{call sp_actividad_comercial(?,?,'','',null,'','','','','','0','0','','','5','6','9','','','','','','','','0')}");
+            sp_usu = _connMy.prepareCall("{call sp_actividad_comercial(?,?,'','',null,'','','','','','0','0','','','5','6','9','','','','','','','','0','0')}");
             sp_usu.setString(1,var);
             sp_usu.setLong(2,Integer.parseInt(corrCotiza));
             sp_usu.execute();
@@ -139,6 +140,7 @@
                 crm = rs.getString("crm");
                 comentario = rs.getString("comentario");
                 supervisorSP= rs.getString("supervisor");
+                uf = rs.getString("uf");
             }            
         }        
     }catch(Exception e)
@@ -171,7 +173,14 @@
             $("#txt_actComercial_nomEje").val("<%=NomEje%>");
             $("#txt_actComercial_rv").val("<%=rut%>");
         }
-         
+        
+        if("<%=tipoUser%>" == "Usuario" || "<%=tipoUser%>" == "Supervisor")
+        {      
+            $("#btn_distribucion").hide();
+            $("#DetalleIngreso").hide();
+            $("#DetalleElimina").hide();
+        }
+        
          if("<%=id%>"== 1)
         {       
             $("#txt_actComercial_nomEje").val("<%=nom%>");
@@ -193,6 +202,7 @@
             }
             $("#txt_actComercial_rv").val("<%=rutEje%>");
             $("#slt_actComercial_TipoNegocio").val("<%=tipoNeg%>");
+            /*
             if("<%=tipoNeg%>" == "Captura")
                 {                    
                     $("#slt_actComercial_TipoNegocio").children().remove();
@@ -212,8 +222,10 @@
                 $("#slt_actComercial_TipoNegocio").append("<option value='Captura'>Captura</option>");
                 $("#slt_actComercial_TipoNegocio").append("<option selected value='Desarrollo Mediana Empresa'>Desarrollo Mediana Empresa</option>");                    
             }
+            */
             $("#txt_actComercial_supervisor").val("<%=supervisorSP%>");
             $("#slt_actComercial_ejecutivo").val("<%=NomEje%>");            
+            $("#txt_actComercial_uf").val("<%=uf%>");   
 //            $("#btn_distribucion").show();
         }
         if("<%=id%>"== 3)
@@ -237,6 +249,7 @@
             $("#lanzador").hide();
 //            $("#btn_distribucion").show();
             $("#DetalleIngreso").hide();
+            $("#DetalleElimina").show();
             var filas = $('#tblDetalleComer').children('tbody').children('tr').length;
             for(var i=0; i <filas ; i++)
             {
@@ -271,6 +284,7 @@ function cargaTipoNegocioInit()
                 $("#txt_actComercial_rv").val(campos[0]);
                 $("#txt_actComercial_rv").attr("disabled","disabled"); 
                 $("#slt_actComercial_TipoNegocio").val(campos[1]);
+                
                 if(campos[1] == "Captura")
                 {
                     $("#slt_actComercial_TipoNegocio").children().remove();
@@ -281,7 +295,7 @@ function cargaTipoNegocioInit()
                     $("#slt_actComercial_TipoNegocio").removeAttr("disabled");
                     //Sacar las opciones
                     $("#slt_actComercial_TipoNegocio").children().remove();
-                    $("#slt_actComercial_TipoNegocio").append("<option value='Captura'>Captura</option>");
+                    //$("#slt_actComercial_TipoNegocio").append("<option value='Captura'>Captura</option>");
                     $("#slt_actComercial_TipoNegocio").append("<option selected value='Desarrollo Peque\u00f1a Empresa'>Desarrollo Peque\u00f1a Empresa</option>");                    
                 }
                 if(campos[1] == "Desarrollo Mediana Empresa")
@@ -289,7 +303,7 @@ function cargaTipoNegocioInit()
                     $("#slt_actComercial_TipoNegocio").removeAttr("disabled");
                     //Sacar las opciones
                     $("#slt_actComercial_TipoNegocio").children().remove();
-                    $("#slt_actComercial_TipoNegocio").append("<option value='Captura'>Captura</option>");
+                    //$("#slt_actComercial_TipoNegocio").append("<option value='Captura'>Captura</option>");
                     $("#slt_actComercial_TipoNegocio").append("<option selected value='Desarrollo Mediana Empresa'>Desarrollo Mediana Empresa</option>");                    
                 }
                 
@@ -364,7 +378,7 @@ function cargaTipoNegocioInit()
                                     if(tipoUser.equals("Administrador"))
                                     {
                                 %>
-                                <select onchange="cargaRv()"  id="slt_actComercial_ejecutivo" name="slt_actComercial_ejecutivo">
+                                <select onchange="cargaTipoNegocioInit()"  id="slt_actComercial_ejecutivo" name="slt_actComercial_ejecutivo">
                                     <option value="">--Seleccione--</option>
                                 <%  
                                     
@@ -547,34 +561,52 @@ function cargaTipoNegocioInit()
                             <td rowspan="2"colspan="2"> <textarea name="txa_actComercial_comentario" id="txa_actComercial_comentario" rows="2" cols="28"></textarea></td>
                         </tr>
                         <tr>
-                            <td></td>
-                            <td><input type="hidden" name="txt_actComercial_corrCotiza" maxlength="11" id="txt_actComercial_corrCotiza" value="0"/></td>                           
+                            <td>UF</td>
+                            <td><input type="text" name="txt_actComercial_uf" maxlength="11" id="txt_actComercial_uf"/></td>
+                            
                             <td>Tipo Negocio:</td>
-                            <td>                                                                
+                            <td>
                                 <select name="slt_actComercial_TipoNegocio" id="slt_actComercial_TipoNegocio">
                                             <%--<option value="">--Seleccione--</option>--%>
                                             <%--se elimina linea de option value = ""--%>
-                                            
-                                            <%                                                   
-                                                tabla = "Tipo Negocio";  
-                                                sp_Carga = _connMy.prepareCall("{call sp_CargaCombo(?,'','')}");
-                                                sp_Carga.setString(1,tabla);
-                                                sp_Carga.execute();
-                                                final ResultSet CargaTipoNegocio = sp_Carga.getResultSet();                                                   
-                                                while( CargaTipoNegocio.next())
-                                                { 
-                                                    String descripcion =CargaTipoNegocio.getString("descripcion");
-                                                    if(tipoNegocio.equals(descripcion)||tipoNeg.equals(descripcion) || descripcion.equals("Captura")||tipoUser.equals("Administrador")||tipoUser.equals("Backoffice"))
-                                                    {                                                        
-                                            %>
-                                                        <option value="<%=descripcion%>"><%=descripcion%></option>
                                             <%
-                                                     
-                                                    }
+                                                if(tipoUser.equals("Administrador") || tipoUser.equals("Backoffice") )
+                                                {
+                                                    %>
+                                                    <option value="" selected>--Seleccione--</option>
+                                                    <%
+                                                    try
+                                                    {
+                                                        tabla = "Tipo Negocio";
+                                                        sp_Carga = _connMy.prepareCall("{call sp_CargaCombo(?,'','')}");
+                                                        sp_Carga.setString(1,tabla);
+                                                        sp_Carga.execute();
+                                                        final ResultSet CargaTipoNegocio = sp_Carga.getResultSet();                                                   
+                                                        while(CargaTipoNegocio.next())
+                                                        {
+                                                            String descripcion = CargaTipoNegocio.getString("descripcion");
+                                                            //if(tipoNegocio.equals(descripcion)||tipoNeg.equals(descripcion) || descripcion.equals("Captura")||tipoUser.equals("Administrador")||tipoUser.equals("Backoffice"))
+                                                            %>
+                                                            <option value="<%=descripcion%>"><%=descripcion%></option>
+                                                            
+                                                            <%
+                                                        }
+                                                    }catch(Exception e)
+                                                    {
+                                                        out.print("Error: "+e.getMessage());
+                                                    }                                    
                                                 }
-                                            %>                                                                                                                                           
-                                </select>                                                                  
+                                                if(tipoUser.equals("Supervisor") || tipoUser.equals("Usuario"))
+                                                {
+                                                    %>
+                                                    <option value="<%=tipoNegocio%>"><%=tipoNegocio%></option>
+                                                    <%
+                                                }
+                                            %>
+                                </select>
                             </td>
+                           <td><input type="hidden" name="txt_actComercial_corrCotiza" maxlength="11" id="txt_actComercial_corrCotiza" value="0"/></td>                           
+                           
                         </tr>
                     </table>
                 </form>
@@ -675,8 +707,6 @@ function cargaTipoNegocioInit()
                         </td>                          
                     </tr>
                     <tr>
-                        <td>UF:</td>
-                        <td><input type="text"  maxlength="5" name="txt_detalleComercial_uf" id="txt_detalleComercial_uf" /></td>
                         <td>Tipo Plan Nuevo:</td>
                         <td>
                             <select onchange="loadPlanNuevo()" id="slt_detalleComercial_tipoPlanNue" name="slt_detalleComercial_tipoPlanNue">
@@ -718,7 +748,6 @@ function cargaTipoNegocioInit()
                                             <th>Tipo Plan Nuevo</th>
                                             <th>Plan Nuevo</th>
                                             <th>Cargo Fijo</th>
-                                            <th>UF</th>
                                             <th>ARPU</th>
                                         </tr>
                                     </thead>				
@@ -728,20 +757,19 @@ function cargaTipoNegocioInit()
                                          int ultimo =0;
                                          
                                          var = "consulta";                                        
-                                         sp_usu = _connMy.prepareCall("{call sp_detalleComer_Tmp(?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+                                         sp_usu = _connMy.prepareCall("{call sp_detalleComer_Tmp(?,?,?,?,?,?,?,?,?,?,?,?)}");
                                         sp_usu.setString(1,var);
                                         sp_usu.setLong(2,0);
-                                        sp_usu.setDouble(3,0);
+                                        sp_usu.setString(3,"");
                                         sp_usu.setString(4,"");
                                         sp_usu.setString(5,"");
                                         sp_usu.setString(6,"");
-                                        sp_usu.setString(7,"");
+                                        sp_usu.setLong(7,0);
                                         sp_usu.setLong(8,0);
-                                        sp_usu.setLong(9,0);
-                                        sp_usu.setString(10,"");
-                                        sp_usu.setLong(11,0);
-                                        sp_usu.setLong(12,Long.parseLong(corrCotiza));  
-                                        sp_usu.setLong(13,Long.parseLong(secuencia));
+                                        sp_usu.setString(9,"");
+                                        sp_usu.setLong(10,0);
+                                        sp_usu.setLong(11,Long.parseLong(corrCotiza));  
+                                        sp_usu.setLong(12,Long.parseLong(secuencia));
                                         sp_usu.execute();
                                         final ResultSet rsDetalle = sp_usu.getResultSet();
                                         claseGrilla = "";
@@ -765,7 +793,6 @@ function cargaTipoNegocioInit()
                                         <td id ="actComerDet_tipoPlanNue<%=cont%>"><%=rsDetalle.getString("tipo_plan_nue")%></td>
                                         <td id ="actComerDet_planNue<%=cont%>"><%=rsDetalle.getString("plan_nuevo")%></td>                                            
                                         <td id ="actComerDet_cargoFijoNue<%=cont%>"><%=rsDetalle.getString("cargo_fijo_nue")%></td>
-                                        <td id ="actComerDet_uf<%=cont%>"><%=rsDetalle.getString("uf")%></td>
                                         <td id ="actComerDet_arpu<%=cont%>"><%=rsDetalle.getString("arpu")%></td>                                               
                                      <%
                                             out.print("</tr>");

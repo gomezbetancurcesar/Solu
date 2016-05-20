@@ -93,7 +93,6 @@
                             <th>Tipo Plan Nuevo</th>
                             <th>Plan Nuevo</th>
                             <th>Cargo Fijo</th>
-                            <th>UF</th>
                             <th>ARPU</th>
                             <th>Cantidad</th>
                         </tr>
@@ -117,7 +116,7 @@
                 Número Móvil inicial:
             </td>
             <td class="letra" style="padding-top: 35px;">
-                <input type="text" id="txt_distribucion_nro" maxlength="8" value = "<%=ultimo%>"/>               
+                <input type="text" id="txt_distribucion_nro" maxlength="11" value = "<%=ultimo%>"/>               
             </td>
         </div>
         <td rowspan="6">
@@ -184,12 +183,6 @@
         <td>
             <input type="text" maxlength="10" id="txt_distribucion_arpu" name="txt_distribucion_arpu" />
         </td> 
-    </tr>
-    <tr>
-        <td class="letra">UF:</td>
-        <td>
-            <input type="text"  maxlength="5" name="txt_distribucion_uf" id="txt_distribucion_uf" />
-        </td>
     </tr>
     <tr>
         <td class="letra">PORT-PP-HAB:</td>

@@ -381,7 +381,7 @@ pageEncoding="ISO-8859-1"%>
                                             <th></th>                                            
                                             <th>Estado Actual</th>
                                             <th>Estado Siguiente</th>
-                                            <th>Rut Usuario</th>
+<!--                                            <th  >Rut Usuario</th>-->
                                         </tr>
                                     </thead>                                                                                      
                                     <tbody>
@@ -411,7 +411,7 @@ pageEncoding="ISO-8859-1"%>
 <!--                                         //<td id="work_Id<%--contWork%>"><%= rsWork.getString("id")--%></td>-->
                                         <td id="work_estAct<%=contWork%>"><%=rsWork.getString("estado_actual")%></td>
                                         <td id="work_estSig<%=contWork%>"><%=rsWork.getString("estado_siguiente")%></td>
-                                        <td id="work_usr<%=contWork%>"><%=rsWork.getString("rut_usr")%></td>
+<!--                                        <td id="work_usr<%=contWork%>"><%=rsWork.getString("rut_usr")%></td>-->
                                         <%
                                                 out.println("</tr>");
                                                 contWork++;
@@ -473,9 +473,9 @@ pageEncoding="ISO-8859-1"%>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="letra">Rut:</td>
+                                    <td  style="display:none;" class="letraRut">Rut:</td>
                                     <td class="letra">
-                                        <input type="text" maxlength="11" name="txt_work_rut" id="txt_work_rut" />
+                                        <input type="hidden" maxlength="11" name="txt_work_rut" id="txt_work_rut" />
                                     </td>
                                 </tr>                         
                                 </table>

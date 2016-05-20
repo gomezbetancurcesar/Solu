@@ -106,13 +106,18 @@ function seleccion_registro_actividadComercial(id){
     var estado = $(".seleccionado").find("[id^='ActCom_estado']").first().text();
     estado = $.trim(estado);
     
+    
     var bloqueados = $("#bloqueados").val();
     bloqueados = bloqueados.split("___");
     
-    if(id == 3 && $.inArray(estado, bloqueados) >= 0){
+    
+    
+    if(id == 2 && $.inArray(estado, bloqueados) >= 0){
         FuncionErrores(246);
         return false;
+        
     }
+    
     $.ajax({
         url : 'ServletCargaTmp', 
         data : "secu="+secu+"&correlativo="+numero,
@@ -341,20 +346,21 @@ function seleccion_registro_actividadComercial(id){
                                 <th width="6.17%">Rut Cliente</th>
                                 <th width="19.03%">Cliente</th>
                                 <th width="3.9%">Caso</th>
-                                <th width="8.8%">N&uacute;mero Negocio</th>
+                                <th width="6.8%">N&uacute;mero Negocio</th>
                                 <th width="7.26%">Correlativo Cotizaci&oacute;n</th>
                                 <th width="7.14%">Tipo Servicio</th>
                                 <th width="9.1%">Servicios M&oacute;viles</th>
-                                <th width="8.8%">Cantidad M&oacute;viles</th>
+                                <th width="6.8%">Cantidad M&oacute;viles</th>
                                 <th width="6.17%">Estado</th>
-                                <th width="7.37%">Estado Cierre</th>
+                                <th width="10.17%">Tipo Negocio</th>
+<!--                                <th width="7.37%">Estado Cierre</th>-->
                             </tr>
                         </thead>                        
                         <tbody>                            
                             <%                                
                                 String var = "consulta_N";
                                 
-                                CallableStatement sp_usu = _connMy.prepareCall("{call sp_actividad_comercial(?,?,?,?,?,?,?,?,'','1','2','3','','','4','5','6','','','','','','','','0')}");
+                                CallableStatement sp_usu = _connMy.prepareCall("{call sp_actividad_comercial(?,?,?,?,?,?,?,?,'','1','2','3','','','4','5','6','','','','','','','','0','0')}");
                                 sp_usu.setString(1,var);
                                 sp_usu.setInt(2,0);
                                 sp_usu.setString(3,tipoUser);
@@ -395,7 +401,8 @@ function seleccion_registro_actividadComercial(id){
                             <td id="ActCom_ServicioMovil<%=cont%>"><%= rs.getString("servicios_moviles")%></td>                            
                             <td id="ActCom_cantMovil<%=cont%>"><%= rs.getString("cant_moviles")%></td>
                             <td id="ActCom_estado<%=cont%>"><%= rs.getString("estado")%></td>
-                            <td id="ActCom_estadoCierre<%=cont%>"><%= rs.getString("estado_cierre")%></td>
+                            <td id="ActCom_tipoNeg<%=cont%>"><%= rs.getString("tipo_negocio")%></td>
+<!--                            <td id="ActCom_estadoCierre<%=cont%>"><%= rs.getString("estado_cierre")%></td>-->
                             <%
                                     out.println("</tr>");                                   
                                     cont ++;                                    

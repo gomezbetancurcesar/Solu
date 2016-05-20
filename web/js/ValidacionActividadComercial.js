@@ -1,8 +1,12 @@
 function FuncionActividadComercial(id,secuencia){
     var validarRut = new RegExp("[^0-9kK-]"); 
-    var validarNum = new RegExp("[^0-9]");    
+    var validarNum = new RegExp("[^0-9]");
+    var valNumDouble = new RegExp("[^0-9.]");
+    
     var rv = $("#txt_actComercial_rv").val();  
     var rutCli = $("#txt_actComercial_rutcli").val();
+    var uf = $("#txt_actComercial_uf").val();
+    
     var posicion = rv.indexOf('-'); 
     var tmp = VerificaRut(rv);       
     var posicion1 = rutCli.indexOf('-'); 
@@ -228,6 +232,18 @@ function FuncionActividadComercial(id,secuencia){
         $("#slt_actComercial_TipoNegocio").focus();
         return false;
     }
+    if(uf == "" || valNumDouble.test(uf))
+    {
+        FuncionErrores(202);
+        $("#txt_actComercial_uf").focus();
+        return false;
+    }
+    if(parseFloat(uf) > 999.99)
+    {
+        FuncionErrores(223);
+        $("#txt_actComercial_uf").focus();
+        return false;
+    }
     if(validaCorrCotiza && validaNroNegocio){
         if(errorCorrCotiza){
             FuncionErrores(245);
@@ -271,18 +287,6 @@ function DetalleActividadComercial(id)
     {
         FuncionErrores(202);
         $("#txt_detalleComercial_nroMovil").focus();
-        return false;
-    }
-    if(valNumDouble.test($("#txt_detalleComercial_uf").val()))
-    {
-        FuncionErrores(202);
-        $("#txt_detalleComercial_uf").focus();
-        return false;
-    }
-    if($("#txt_detalleComercial_uf").val() > 999.99)
-    {
-        FuncionErrores(223);
-        $("#txt_detalleComercial_uf").focus();
         return false;
     }
     if($("#slt_detalleComercial_tipoPlanNue").val() == "")

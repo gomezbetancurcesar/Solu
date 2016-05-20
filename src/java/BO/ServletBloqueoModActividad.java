@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author cesar-gomez
+ 
  */
 @WebServlet(name = "ServletBloqueoModActividad", urlPatterns = {"/ServletBloqueoModActividad"})
 public class ServletBloqueoModActividad extends HttpServlet {

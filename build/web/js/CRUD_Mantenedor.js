@@ -294,29 +294,30 @@ function WorkFlow(id)
         $("#slt_work_estSig").focus();
         return false;
     }
-    if(rut == "")
-    {
-        FuncionErrores(113);
-        $("#txt_work_rut").focus();
-        return false;
-    }
-    if (valido.test(rut)) {
-        FuncionErrores(114);
-        $("#txt_work_rut").focus();
-        return false;
-    }
-    if(posicion == -1)
-    {
-        FuncionErrores(115);
-        $("#txt_work_rut").focus();
-        return false;
-    }
-    if(tmp == false)
-    {
-        FuncionErrores(116);
-        $("#txt_work_rut").focus();
-        return false;
-    }              
+//    if(rut == "")
+//    {
+//        FuncionErrores(113);
+//        $("#txt_work_rut").focus();
+//        return false;
+//    }
+    
+//    if (valido.test(rut)) {
+//        FuncionErrores(114);
+//        $("#txt_work_rut").focus();
+//        return false;
+//    }
+//    if(posicion == -1)
+//    {
+//        FuncionErrores(115);
+//        $("#txt_work_rut").focus();
+//        return false;
+//    }
+//    if(tmp == false)
+//    {
+//        FuncionErrores(116);
+//        $("#txt_work_rut").focus();
+//        return false;
+//    }              
     if(id == 'ingreso')
     {
         var juntadatos = "";

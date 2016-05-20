@@ -68,9 +68,12 @@ public class ServletSPUsuario extends HttpServlet {
             sp_usu.setString(7,supervisor);
             sp_usu.registerOutParameter("op", Types.VARCHAR);
             sp_usu.execute();
+            
             String respuesta = sp_usu.getString("op");
             System.out.println("Salida: "+respuesta);
+            
             out.print(respuesta);
+            
             //response.sendRedirect("SL_Mantencion_Configuracion.jsp");
             
         }catch(Exception e){

@@ -22,6 +22,7 @@ function ActividadComercial(id,secuencia){
     }
     var fila = $("#tblDetalleComer").children("tbody").children("tr").length;
     var rv = "";
+    
     rv = $("#txt_actComercial_rv").val();
     var rutCli = $("#txt_actComercial_rutcli").val();
     var tipoServicio = $("#slt_actComercial_tipoServicio").val();
@@ -37,10 +38,10 @@ function ActividadComercial(id,secuencia){
     var estado = $("#slt_actComercial_status").val();
     var comentario = $("#txa_actComercial_comentario").val();
     var corrCotiza = $("#txt_actComercial_corrCotiza").val();
-    alert(corrCotiza);
-    return false;
     var tipoNegocio = "";
     var supervisor = $("#txt_actComercial_supervisor").val();
+    var uf = $("#txt_actComercial_uf").val();
+    
     if($("#tipoUser").val() == "Usuario" || $("#tipoUser").val() == "Backoffice")
     {
         nomEje = $("#txt_actComercial_nomEje").val();
@@ -72,7 +73,7 @@ function ActividadComercial(id,secuencia){
                     "&slt_actComercial_ejecutivo="+nomEje+"&txt_actComercial_nomCli="+nomCli+"&txt_actComercial_fecha="+fecha+"&txt_actComercial_caso="+caso+
                     "&txt_actComercial_cantMovil="+cantMovil+"&slt_actComercial_serviMovil="+ServicioMovil+"&txt_actComercial_nroNegocio="+nroNegocio+"&chkBox_actComercial_CRM="+crm+
                     "&slt_actComercial_tipoClte="+tipoCli+"&slt_actComercial_status="+estado+"&txa_actComercial_comentario="+comentario+"&txt_actComercial_corrCotiza="+corrCotiza+
-                    "&slt_actComercial_TipoNegocio="+tipoNegocio+"&seq="+secuencia+"&slt_actComercial_supervisor="+supervisor,
+                    "&slt_actComercial_TipoNegocio="+tipoNegocio+"&seq="+secuencia+"&slt_actComercial_supervisor="+supervisor+"&txt_actComercial_uf="+uf,
             type : 'POST',
             dataType : "html",
             success : function(data){

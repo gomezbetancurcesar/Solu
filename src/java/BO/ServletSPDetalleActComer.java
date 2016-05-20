@@ -47,7 +47,6 @@ public class ServletSPDetalleActComer extends HttpServlet {
             Connection _connMy = null;
             String opcion_Detalle_ActividadComercial = request.getParameter("opcion_Detalle_ActividadComercial"); 
             String nroMovil = request.getParameter("txt_detalleComercial_nroMovil");
-            String uf = request.getParameter("txt_detalleComercial_uf");
             String tipoPlanAnt = request.getParameter("slt_detalleComercial_tipoPlanAnt");
             String tipoPlanNue = request.getParameter("slt_detalleComercial_tipoPlanNue");
             String PlanAnt = request.getParameter("slt_detalleComercial_planAnt");
@@ -58,52 +57,44 @@ public class ServletSPDetalleActComer extends HttpServlet {
             String arpu = request.getParameter("txt_detalleComercial_arpu");
             String corrCotiza = request.getParameter("txt_actComercial_corrCotiza");
             String secuencia = request.getParameter("secuencia");
-            double ufe = 0;
-            if(uf.equals(""))
-            {
-                ufe = 0;
-            }else
-            {
-                ufe = Double.parseDouble(uf);
-            }
-            long movil = Long.parseLong(nroMovil);   
+            //int movil = Integer.parseInt(nroMovil);    
+            long movil  = Long.parseLong(nroMovil);
+                        
             if(cargoFijoAnt.equals(""))
             {
                 cargoFijoAnt = "0";
             }
             try{            
                 _connMy = conexionBD.Conectar((String)s.getAttribute("organizacion"));                            
-                CallableStatement sp_usu = _connMy.prepareCall("{call sp_detalleComer_Tmp(?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+                CallableStatement sp_usu = _connMy.prepareCall("{call sp_detalleComer_Tmp(?,?,?,?,?,?,?,?,?,?,?,?)}");
                 sp_usu.setString(1,opcion_Detalle_ActividadComercial);
                 sp_usu.setLong(2,movil);
-                sp_usu.setDouble(3,ufe);
-                sp_usu.setString(4,tipoPlanAnt);
-                sp_usu.setString(5,tipoPlanNue);
-                sp_usu.setString(6,PlanAnt);
-                sp_usu.setString(7,PlanNue);
-                sp_usu.setLong(8,Long.parseLong(cargoFijoAnt));
-                sp_usu.setLong(9,Long.parseLong(cargoFijoNue));
-                sp_usu.setString(10,port_pp_hab);
-                sp_usu.setLong(11,Long.parseLong(arpu));
-                sp_usu.setLong(12,Long.parseLong(corrCotiza));
-                sp_usu.setLong(13,Integer.parseInt(secuencia));            
+                sp_usu.setString(3,tipoPlanAnt);
+                sp_usu.setString(4,tipoPlanNue);
+                sp_usu.setString(5,PlanAnt);
+                sp_usu.setString(6,PlanNue);
+                sp_usu.setLong(7,Long.parseLong(cargoFijoAnt));
+                sp_usu.setLong(8,Long.parseLong(cargoFijoNue));
+                sp_usu.setString(9,port_pp_hab);
+                sp_usu.setLong(10,Long.parseLong(arpu));
+                sp_usu.setLong(11,Long.parseLong(corrCotiza));
+                sp_usu.setLong(12,Integer.parseInt(secuencia));            
                 sp_usu.execute();
 
                 String var = "consulta";
-                sp_usu = _connMy.prepareCall("{call sp_detalleComer_Tmp(?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+                sp_usu = _connMy.prepareCall("{call sp_detalleComer_Tmp(?,?,?,?,?,?,?,?,?,?,?,?)}");
                 sp_usu.setString(1,var);
                 sp_usu.setInt(2,0);
-                sp_usu.setDouble(3,0);
+                sp_usu.setString(3,"");
                 sp_usu.setString(4,"");
                 sp_usu.setString(5,"");
                 sp_usu.setString(6,"");
-                sp_usu.setString(7,"");
+                sp_usu.setLong(7,0);
                 sp_usu.setLong(8,0);
-                sp_usu.setLong(9,0);
-                sp_usu.setString(10,"");
-                sp_usu.setLong(11,0);
-                sp_usu.setLong(12,Long.parseLong(corrCotiza)); 
-                sp_usu.setLong(13,Long.parseLong(secuencia));
+                sp_usu.setString(9,"");
+                sp_usu.setLong(10,0);
+                sp_usu.setLong(11,Long.parseLong(corrCotiza)); 
+                sp_usu.setLong(12,Long.parseLong(secuencia));
                 sp_usu.execute();
                 final ResultSet rs = sp_usu.getResultSet();            
                 String cla = "";
@@ -131,7 +122,6 @@ public class ServletSPDetalleActComer extends HttpServlet {
                     salida += "<td id =\"actComerDet_tipoPlanNue"+cont+"\">"+rs.getString("tipo_plan_nue")+"</td>"; 
                     salida += "<td id =\"actComerDet_planNue"+cont+"\">"+rs.getString("plan_nuevo")+"</td>"; 
                     salida += "<td id =\"actComerDet_cargoFijoNue"+cont+"\">"+rs.getString("cargo_fijo_nue")+"</td>"; 
-                    salida += "<td id =\"actComerDet_uf"+cont+"\">"+rs.getString("uf")+"</td>"; 
                     salida += "<td id =\"actComerDet_arpu"+cont+"\">"+rs.getString("arpu")+"</td>";                
                     salida += "</tr>";
                     cont++;
