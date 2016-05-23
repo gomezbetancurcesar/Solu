@@ -22,7 +22,6 @@ function ActividadComercial(id,secuencia){
     }
     var fila = $("#tblDetalleComer").children("tbody").children("tr").length;
     var rv = "";
-    
     rv = $("#txt_actComercial_rv").val();
     var rutCli = $("#txt_actComercial_rutcli").val();
     var tipoServicio = $("#slt_actComercial_tipoServicio").val();

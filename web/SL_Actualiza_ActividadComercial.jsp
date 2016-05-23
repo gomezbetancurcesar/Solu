@@ -185,6 +185,7 @@
         {       
             $("#txt_actComercial_nomEje").val("<%=nom%>");
             $("#slt_actComercial_TipoNegocio").val("<%=tipoNegocio%>");
+            $("#btn_actComercial_avanzar").hide();
             
         }
         if("<%=crm%>" === "si")
@@ -195,7 +196,8 @@
             $("#chkBox_actComercial_CRM").prop("checked","");
         }
         if("<%=id%>"== 2)
-        {            
+        {     
+            $("#btn_actComercial_avanzar").show();
             if("<%=cantMovil%>" == "")
             {
                 $("#txt_actComercial_cantMovil").val("<%=cantMovilSP%>");
@@ -670,7 +672,7 @@ function cargaTipoNegocioInit()
                     </tr>
                     <tr>
                         <td>Número Movil:</td>
-                        <td id="EspacioDetalle"><input type="text" id="txt_detalleComercial_nroMovil" maxlength="8" name="txt_detalleComercial_nroMovil" /></td>
+                        <td id="EspacioDetalle"><input type="text" id="txt_detalleComercial_nroMovil" maxlength="11" name="txt_detalleComercial_nroMovil" /></td>
                         <td>Tipo Plan Antiguo:</td>
                         <td id="EspacioDetalle">
                             <select onchange="loadPlanAntiguo()" id="slt_detalleComercial_tipoPlanAnt" name="slt_detalleComercial_tipoPlanAnt">
@@ -838,6 +840,7 @@ function cargaTipoNegocioInit()
     </table>
 </div>            
 <input class ="botonera" type="submit" id="btn_actComercial_grabar" name="btn_actComercial_grabar" value="Grabar" onClick="FuncionActividadComercial(<%=id%>,<%=secuencia%>)"  />
+<input class ="botonera" type="submit" id="btn_actComercial_avanzar" name="btn_actComercial_grabar" value="Avanzar Estado" onClick=""  />
 <input class = "botonera" type="submit" name="btnCancela" value="Cancelar" onClick="DeleteTmp(<%=secuencia%>)" />
 </body>
 </html>
