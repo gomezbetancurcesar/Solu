@@ -147,178 +147,205 @@
     {
         out.println("Error:" + e.getMessage());
     }
-       
 %>
-    <script type="text/javascript">        
-      
-    $(document).ready(function (){   
-        var fila = $("#tblDetalleComer").children("tbody").children("tr").length;   
-        if("<%=corrCotiza%>" != 0)
-        {
-            $("#txt_actComercial_corrCotiza").val("<%=corrCotiza%>"); 
-        }                                   
-        $("#txt_actComercial_fecha").val("<%=fecha%>");              
-        $("#txa_actComercial_comentario").val("<%=comentario%>");
-        $("#txt_actComercial_rutcli").val("<%=rutCli%>");
-        $("#txt_actComercial_nomCli").val("<%=nomCli%>");
-        $("#txt_actComercial_caso").val("<%=caso%>");                    
-        $("#slt_actComercial_tipoClte").val("<%=tipCli%>");
-        $("#txt_actComercial_corrCotiza").val("<%=corrCotiza%>");
-        $("#slt_actComercial_tipoServicio").val("<%=tipServi%>");        
-        $("#txt_actComercial_cantMovil").val("<%=cantMovil%>");
-        $("#slt_actComercial_status").val("<%=Estado%>");        
-        $("#txt_actComercial_nroNegocio").val("<%=negocio%>");  
-        if("<%=tipoUser%>" == "Usuario" || "<%=tipoUser%>" == "Backoffice")
-        {      
-            $("#txt_actComercial_nomEje").val("<%=NomEje%>");
-            $("#txt_actComercial_rv").val("<%=rut%>");
-        }
-        
-        if("<%=tipoUser%>" == "Usuario" || "<%=tipoUser%>" == "Supervisor")
-        {      
-            $("#btn_distribucion").hide();
-            $("#DetalleIngreso").hide();
-            $("#DetalleElimina").hide();
-        }
-        
-         if("<%=id%>"== 1)
-        {       
-            $("#txt_actComercial_nomEje").val("<%=nom%>");
-            $("#slt_actComercial_TipoNegocio").val("<%=tipoNegocio%>");
-            $("#btn_actComercial_avanzar").hide();
-            
-        }
-        if("<%=crm%>" === "si")
-        {
-            $("#chkBox_actComercial_CRM").prop("checked","checked");
-        }else
-        {
-            $("#chkBox_actComercial_CRM").prop("checked","");
-        }
-        if("<%=id%>"== 2)
-        {     
-            $("#btn_actComercial_avanzar").show();
-            if("<%=cantMovil%>" == "")
+    <script type="text/javascript">  
+        $(document).ready(function (){   
+            var fila = $("#tblDetalleComer").children("tbody").children("tr").length;   
+            if("<%=corrCotiza%>" != 0)
             {
-                $("#txt_actComercial_cantMovil").val("<%=cantMovilSP%>");
+                $("#txt_actComercial_corrCotiza").val("<%=corrCotiza%>"); 
+            }                                   
+            $("#txt_actComercial_fecha").val("<%=fecha%>");              
+            $("#txa_actComercial_comentario").val("<%=comentario%>");
+            $("#txt_actComercial_rutcli").val("<%=rutCli%>");
+            $("#txt_actComercial_nomCli").val("<%=nomCli%>");
+            $("#txt_actComercial_caso").val("<%=caso%>");                    
+            $("#slt_actComercial_tipoClte").val("<%=tipCli%>");
+            $("#txt_actComercial_corrCotiza").val("<%=corrCotiza%>");
+            $("#slt_actComercial_tipoServicio").val("<%=tipServi%>");        
+            $("#txt_actComercial_cantMovil").val("<%=cantMovil%>");
+            $("#slt_actComercial_status").val("<%=Estado%>");    
+            $("#hid_estadoActual").val("<%=Estado%>");
+            $("#txt_actComercial_nroNegocio").val("<%=negocio%>");  
+            if("<%=tipoUser%>" == "Usuario" || "<%=tipoUser%>" == "Backoffice")
+            {      
+                $("#txt_actComercial_nomEje").val("<%=NomEje%>");
+                $("#txt_actComercial_rv").val("<%=rut%>");
             }
-            $("#txt_actComercial_rv").val("<%=rutEje%>");
-            $("#slt_actComercial_TipoNegocio").val("<%=tipoNeg%>");
-            /*
-            if("<%=tipoNeg%>" == "Captura")
-                {                    
-                    $("#slt_actComercial_TipoNegocio").children().remove();
-                    $("#slt_actComercial_TipoNegocio").append("<option value='Captura'>Captura</option>");
-                }
-            if("<%=tipoNeg%>" == "Desarrollo Peque\u00f1a Empresa")
-            {
-                $("#slt_actComercial_TipoNegocio").removeAttr("disabled");                
-                $("#slt_actComercial_TipoNegocio").children().remove();
-                $("#slt_actComercial_TipoNegocio").append("<option value='Captura'>Captura</option>");
-                $("#slt_actComercial_TipoNegocio").append("<option selected value='Desarrollo Peque\u00f1a Empresa'>Desarrollo Peque\u00f1a Empresa</option>");                    
-            }
-            if("<%=tipoNeg%>" == "Desarrollo Mediana Empresa")
-            {
-                $("#slt_actComercial_TipoNegocio").removeAttr("disabled");                
-                $("#slt_actComercial_TipoNegocio").children().remove();
-                $("#slt_actComercial_TipoNegocio").append("<option value='Captura'>Captura</option>");
-                $("#slt_actComercial_TipoNegocio").append("<option selected value='Desarrollo Mediana Empresa'>Desarrollo Mediana Empresa</option>");                    
-            }
-            */
-            $("#txt_actComercial_supervisor").val("<%=supervisorSP%>");
-            $("#slt_actComercial_ejecutivo").val("<%=NomEje%>");            
-            $("#txt_actComercial_uf").val("<%=uf%>");   
-//            $("#btn_distribucion").show();
-        }
-        if("<%=id%>"== 3)
-        {
-            if("<%=cantMovil%>" == "")
-            {
-                $("#txt_actComercial_cantMovil").val("<%=cantMovilSP%>");
-            }
-            $("#txt_actComercial_rv").val("<%=rutEje%>");
-            
-            if($("#tipoUser").val() != "Usuario")
-            {
-                $("#slt_actComercial_ejecutivo").val("<%=NomEje%>");
-            }        
-            else{
-               $("#txt_actComercial_nomEje").val("<%=NomEje%>");
-            }            
-            $("#txt_actComercial_supervisor").val("<%=supervisorSP%>");
-            $("#txt_actComercial_nroNegocio").attr("readonly",true);
-            $("#btn_actComercial_grabar").hide();
-            $("#lanzador").hide();
-//            $("#btn_distribucion").show();
-            $("#DetalleIngreso").hide();
-            $("#DetalleElimina").show();
-            var filas = $('#tblDetalleComer').children('tbody').children('tr').length;
-            for(var i=0; i <filas ; i++)
-            {
-                $("#seleccion"+i).hide();
-            }
-        }
-        
-        cargaTipoPlan();
-        if("<%=tipoUser%>"!="Usuario"){
-          cargaTipoNegocioInit();
-        }
-    });
 
-function cargaTipoNegocioInit()
-    {     
-        var ejecutivo = "";
-        ejecutivo = $("#slt_actComercial_ejecutivo").val();
-        if("<%=tipoUser%>" == "Backoffice"){
-            ejecutivo = $("#txt_actComercial_nomEje").val(); 
-       }
-       var tipo = $("#tipoUser").val();
-        var rut = $("#rutUsuario").val();
-       $.ajax({
-            url : 'ServletCargaRv', 
-            data: "ejecutivo="+ejecutivo+"&rut="+rut+"&tipoUser="+tipo,
-            type : 'POST',
-            dataType : "html",
-            success : function(data) {
-                var campos = [];
-                $("#slt_actComercial_TipoNegocio").removeAttr("disabled");
-                campos = data.split("|");
-                $("#txt_actComercial_rv").val(campos[0]);
-                $("#txt_actComercial_rv").attr("disabled","disabled"); 
-                $("#slt_actComercial_TipoNegocio").val(campos[1]);
-                
-                if(campos[1] == "Captura")
+            if("<%=tipoUser%>" == "Usuario" || "<%=tipoUser%>" == "Supervisor")
+            {      
+                $("#btn_distribucion").hide();
+                $("#DetalleIngreso").hide();
+                $("#DetalleElimina").hide();
+            }
+
+             if("<%=id%>"== 1)
+            {       
+                $("#txt_actComercial_nomEje").val("<%=nom%>");
+                $("#slt_actComercial_TipoNegocio").val("<%=tipoNegocio%>");
+                $("#btn_actComercial_avanzar").hide();
+
+            }
+            if("<%=crm%>" === "si")
+            {
+                $("#chkBox_actComercial_CRM").prop("checked","checked");
+            }else
+            {
+                $("#chkBox_actComercial_CRM").prop("checked","");
+            }
+            if("<%=id%>"== 2)
+            {     
+                $("#btn_actComercial_avanzar").show();
+                if("<%=cantMovil%>" == "")
                 {
-                    $("#slt_actComercial_TipoNegocio").children().remove();
-                    $("#slt_actComercial_TipoNegocio").append("<option value='Captura'>Captura</option>");
+                    $("#txt_actComercial_cantMovil").val("<%=cantMovilSP%>");
                 }
-                if(campos[1] == "Desarrollo Peque\u00f1a Empresa")
+                $("#txt_actComercial_rv").val("<%=rutEje%>");
+                $("#slt_actComercial_TipoNegocio").val("<%=tipoNeg%>");
+                $("#txt_actComercial_supervisor").val("<%=supervisorSP%>");
+                $("#slt_actComercial_ejecutivo").val("<%=NomEje%>");            
+                $("#txt_actComercial_uf").val("<%=uf%>");
+                
+                //Valida si no es administrador, en ese caso, carga las opciones del workflow
+                if("<%=tipoUser%>" != "Administrador"){
+                    cargarEstadosSiguientes();
+                }
+            }
+            if("<%=id%>"== 3)
+            {
+                if("<%=cantMovil%>" == "")
                 {
-                    $("#slt_actComercial_TipoNegocio").removeAttr("disabled");
-                    //Sacar las opciones
-                    $("#slt_actComercial_TipoNegocio").children().remove();
-                    //$("#slt_actComercial_TipoNegocio").append("<option value='Captura'>Captura</option>");
-                    $("#slt_actComercial_TipoNegocio").append("<option selected value='Desarrollo Peque\u00f1a Empresa'>Desarrollo Peque\u00f1a Empresa</option>");                    
+                    $("#txt_actComercial_cantMovil").val("<%=cantMovilSP%>");
                 }
-                if(campos[1] == "Desarrollo Mediana Empresa")
+                $("#txt_actComercial_rv").val("<%=rutEje%>");
+
+                if($("#tipoUser").val() != "Usuario")
                 {
-                    $("#slt_actComercial_TipoNegocio").removeAttr("disabled");
-                    //Sacar las opciones
-                    $("#slt_actComercial_TipoNegocio").children().remove();
-                    //$("#slt_actComercial_TipoNegocio").append("<option value='Captura'>Captura</option>");
-                    $("#slt_actComercial_TipoNegocio").append("<option selected value='Desarrollo Mediana Empresa'>Desarrollo Mediana Empresa</option>");                    
+                    $("#slt_actComercial_ejecutivo").val("<%=NomEje%>");
+                }        
+                else{
+                   $("#txt_actComercial_nomEje").val("<%=NomEje%>");
+                }            
+                $("#txt_actComercial_supervisor").val("<%=supervisorSP%>");
+                $("#txt_actComercial_nroNegocio").attr("readonly",true);
+                $("#btn_actComercial_grabar").hide();
+                $("#lanzador").hide();
+    //            $("#btn_distribucion").show();
+                $("#DetalleIngreso").hide();
+                $("#DetalleElimina").show();
+                $("#btn_actComercial_avanzar").hide();
+                var filas = $('#tblDetalleComer').children('tbody').children('tr').length;
+                for(var i=0; i <filas ; i++)
+                {
+                    $("#seleccion"+i).hide();
                 }
-                
-                $('#slt_actComercial_TipoNegocio').val('<%=tipoNeg%>');
-                $("#txt_actComercial_supervisor").val(campos[2]);
-                $("#txt_actComercial_supervisor").attr("disabled","disabled");
-                
-                
+            }
+
+            cargaTipoPlan();
+            if("<%=tipoUser%>"!="Usuario"){
+              cargaTipoNegocioInit();
             }
         });
-    }
-    
-        </script>
+
+        function cargaTipoNegocioInit()
+        {
+            var ejecutivo = "";
+            ejecutivo = $("#slt_actComercial_ejecutivo").val();
+            if("<%=tipoUser%>" == "Backoffice"){
+                ejecutivo = $("#txt_actComercial_nomEje").val(); 
+            }
+            var tipo = $("#tipoUser").val();
+            var rut = $("#rutUsuario").val();
+            $.ajax({
+                url : 'ServletCargaRv', 
+                data: "ejecutivo="+ejecutivo+"&rut="+rut+"&tipoUser="+tipo,
+                type : 'POST',
+                dataType : "html",
+                success : function(data) {
+                    var campos = [];
+                    $("#slt_actComercial_TipoNegocio").removeAttr("disabled");
+                    campos = data.split("|");
+                    $("#txt_actComercial_rv").val(campos[0]);
+                    $("#txt_actComercial_rv").attr("disabled","disabled"); 
+                    $("#slt_actComercial_TipoNegocio").val(campos[1]);
+
+                    if(campos[1] == "Captura")
+                    {
+                        $("#slt_actComercial_TipoNegocio").children().remove();
+                        $("#slt_actComercial_TipoNegocio").append("<option value='Captura'>Captura</option>");
+                    }
+                    if(campos[1] == "Desarrollo Peque\u00f1a Empresa")
+                    {
+                        $("#slt_actComercial_TipoNegocio").removeAttr("disabled");
+                        //Sacar las opciones
+                        $("#slt_actComercial_TipoNegocio").children().remove();
+                        //$("#slt_actComercial_TipoNegocio").append("<option value='Captura'>Captura</option>");
+                        $("#slt_actComercial_TipoNegocio").append("<option selected value='Desarrollo Peque\u00f1a Empresa'>Desarrollo Peque\u00f1a Empresa</option>");                    
+                    }
+                    if(campos[1] == "Desarrollo Mediana Empresa")
+                    {
+                        $("#slt_actComercial_TipoNegocio").removeAttr("disabled");
+                        //Sacar las opciones
+                        $("#slt_actComercial_TipoNegocio").children().remove();
+                        //$("#slt_actComercial_TipoNegocio").append("<option value='Captura'>Captura</option>");
+                        $("#slt_actComercial_TipoNegocio").append("<option selected value='Desarrollo Mediana Empresa'>Desarrollo Mediana Empresa</option>");                    
+                    }
+
+                    $('#slt_actComercial_TipoNegocio').val('<%=tipoNeg%>');
+                    $("#txt_actComercial_supervisor").val(campos[2]);
+                    $("#txt_actComercial_supervisor").attr("disabled","disabled");
+
+
+                }
+            });
+        }
+        
+        function cargarEstadosSiguientes()
+        {
+            var estadoActual = $.trim($("#hid_estadoActual").val());
+            $.ajax({
+                url: "ServletSPWorkFlow",
+                type:"post",
+                data:{
+                    opcion_WorkFlow: "estadosSiguientes",
+                    estadoActual: estadoActual
+                },
+                success: function(estadosSiguientes){
+                    var opciones = "<option>"+estadoActual+"</option>";
+                    opciones += estadosSiguientes;
+                    $("#slt_actComercial_status").html(opciones);
+                }
+            });
+        }
+        
+        function avanzarEstado(){
+            var idActividad = $("#txt_actComercial_corrCotiza").val();
+            var estadoNuevo = $.trim($("#slt_actComercial_status").val());
+            var estadoActual = $.trim($("#hid_estadoActual").val());
+            
+            //Cambiar código del error!!!
+            if(estadoActual == estadoNuevo){
+                $("#slt_actComercial_status").focus();
+                FuncionErrores(227);
+                return false;
+            }
+            
+            if(confirm("Este proceso sólo avanzará de estado. \n\nOtros datos no serán actualizados")){
+                $.ajax({
+                    url: "ServletAvanzarEstado",
+                    type: "post",
+                    data:{
+                        nuevoEstado: estadoNuevo,
+                        idActividad: idActividad
+                    },
+                    success: function (data){
+                        location.href="SL_Seleccion_ActividadComercial.jsp";
+                    }
+                });
+            }
+        }
+</script>
 </head>
 <body id="principal" onload="cargaServicio()">
 <input type="hidden" value="<%=id%>" id="parametroActComercial" />
@@ -513,8 +540,8 @@ function cargaTipoNegocioInit()
                                 </select>
                             </td>
                             <td>Estado:</td>
-                            
                             <td>
+                                <input type="hidden" id="hid_estadoActual"/>
                                 <select  name="slt_actComercial_status" id="slt_actComercial_status">
                                     <option value="">--Seleccione--</option>
                                     <%
@@ -557,6 +584,16 @@ function cargaTipoNegocioInit()
                                         
                                     %>
                                 </select>
+                                <%
+                                    /*
+                                    if(!id.equals("1")){
+                                        %>
+                                            <!--<input class="distribucion" type="button" id="btn_distribucion" name="btn_distribucion" value="Avanzar Estado" onclick="AbrirDistribucion()"/>-->
+                                        <%
+                                    /*
+                                    }
+                                    */
+                                %>
                             </td>
                         </tr>
                         <tr>
@@ -840,7 +877,7 @@ function cargaTipoNegocioInit()
     </table>
 </div>            
 <input class ="botonera" type="submit" id="btn_actComercial_grabar" name="btn_actComercial_grabar" value="Grabar" onClick="FuncionActividadComercial(<%=id%>,<%=secuencia%>)"  />
-<input class ="botonera" type="submit" id="btn_actComercial_avanzar" name="btn_actComercial_grabar" value="Avanzar Estado" onClick=""  />
+<input class ="botonera" type="submit" id="btn_actComercial_avanzar" name="btn_actComercial_grabar" value="Avanzar Estado" onClick="avanzarEstado()"  />
 <input class = "botonera" type="submit" name="btnCancela" value="Cancelar" onClick="DeleteTmp(<%=secuencia%>)" />
 </body>
 </html>

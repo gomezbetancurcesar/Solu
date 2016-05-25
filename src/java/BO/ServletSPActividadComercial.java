@@ -104,14 +104,23 @@ public class ServletSPActividadComercial extends HttpServlet {
                 cantMovil = "0";
             }
             try{
-                 _connMy = conexionBD.Conectar((String)s.getAttribute("organizacion")); 
-                 String var = "ingreso";
-                CallableStatement sp_usu = _connMy.prepareCall("{call sp_historial(?,?,?,?)}");
-                sp_usu.setString(1,var);                                        
-                sp_usu.setLong(2,Long.parseLong(corrCotiza));
-                sp_usu.setString(3,estado);
-                sp_usu.setString(4,(String)s.getAttribute("rut"));
-                sp_usu.execute();
+                _connMy = conexionBD.Conectar((String)s.getAttribute("organizacion"));
+                CallableStatement sp_usu = null;
+                
+                if(opcion_ActividadComercial.equals("ingreso")){
+                    //Creamos el historial de estado SOLO cuando ingrese una nueva actividad comercial, puesto que al editar es el btn avanzar estado el que lo hace
+                    String var = "ingreso";
+                    sp_usu = _connMy.prepareCall("{call sp_historial(?,?,?,?)}");
+                    sp_usu.setString(1,var);                                        
+                    sp_usu.setLong(2,Long.parseLong(corrCotiza));
+                    sp_usu.setString(3,estado);
+                    sp_usu.setString(4,(String)s.getAttribute("rut"));
+                    sp_usu.execute();
+                }
+                
+                if(opcion_ActividadComercial.equals("modifica")){
+                    estado = "";
+                }
                 
                 Date sqlDate= new Date(formato.parse(fecha).getTime());
                 int posicionRv = rv.indexOf('-'); 

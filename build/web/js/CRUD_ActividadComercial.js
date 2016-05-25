@@ -22,7 +22,6 @@ function ActividadComercial(id,secuencia){
     }
     var fila = $("#tblDetalleComer").children("tbody").children("tr").length;
     var rv = "";
-    
     rv = $("#txt_actComercial_rv").val();
     var rutCli = $("#txt_actComercial_rutcli").val();
     var tipoServicio = $("#slt_actComercial_tipoServicio").val();
@@ -35,12 +34,23 @@ function ActividadComercial(id,secuencia){
     var nroNegocio = $("#txt_actComercial_nroNegocio").val();
     var crm = "";
     var tipoCli = $("#slt_actComercial_tipoClte").val();
-    var estado = $("#slt_actComercial_status").val();
     var comentario = $("#txa_actComercial_comentario").val();
     var corrCotiza = $("#txt_actComercial_corrCotiza").val();
     var tipoNegocio = "";
     var supervisor = $("#txt_actComercial_supervisor").val();
     var uf = $("#txt_actComercial_uf").val();
+    var estado = $("#slt_actComercial_status").val();
+    
+    var estadoNuevo = $.trim($("#slt_actComercial_status").val());
+    var estadoActual = $.trim($("#hid_estadoActual").val());
+    
+    if(mod == "modifica"){
+        if(estadoNuevo != estadoActual){
+            if(!confirm("Los cambios serán almacenados, sin embargo,\npara cambiar estado, debe presionar el botón 'Avanzar Estado'")){
+                return false;
+            }
+        }
+    }
     
     if($("#tipoUser").val() == "Usuario" || $("#tipoUser").val() == "Backoffice")
     {
