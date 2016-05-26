@@ -71,6 +71,8 @@
     String cantMovilSP ="";
     String negocio = "";
     String uf = "";
+    //String con el estado inicial predefinido
+    String estadoInicial = "";
     try
     {
         _connMy = conexionBD.Conectar((String)s.getAttribute("organizacion"));
@@ -125,7 +127,7 @@
                 tipoNeg = rs.getString("tipo_negocio");
                 fecha = rs.getString("fecha");
                 NomEje= rs.getString("nombre_eje");
-                Estado = rs.getString("estado");
+                estadoInicial = Estado = rs.getString("estado");
                 rutEje = rs.getString("rut_eje");
                 rutCli = rs.getString("rut_cli");
                 nomCli = rs.getString("nombre_cli");
@@ -142,14 +144,26 @@
                 supervisorSP= rs.getString("supervisor");
                 uf = rs.getString("uf");
             }            
-        }        
+        }else{
+            //Carga el estado inicial al crear una actividad comercial
+            CallableStatement sp_estadoInicial = _connMy.prepareCall("{call sp_CargaCombo(?,'','')}");
+            sp_estadoInicial.setString(1, "Estado_inicial");
+            sp_estadoInicial.execute();
+            final ResultSet estadoInicialBD = sp_estadoInicial.getResultSet();
+            while(estadoInicialBD.next()){
+                estadoInicial = estadoInicialBD.getString("descripcion");
+            }
+            
+            //Aqui habría que buscar la manera de hacerlo insensible a mayusculas o minusculas
+            Estado = estadoInicial;
+        }
     }catch(Exception e)
     {
         out.println("Error:" + e.getMessage());
     }
 %>
     <script type="text/javascript">  
-        $(document).ready(function (){   
+        $(document).ready(function (){
             var fila = $("#tblDetalleComer").children("tbody").children("tr").length;   
             if("<%=corrCotiza%>" != 0)
             {
@@ -164,8 +178,10 @@
             $("#txt_actComercial_corrCotiza").val("<%=corrCotiza%>");
             $("#slt_actComercial_tipoServicio").val("<%=tipServi%>");        
             $("#txt_actComercial_cantMovil").val("<%=cantMovil%>");
-            $("#slt_actComercial_status").val("<%=Estado%>");    
+            
+            $("#slt_actComercial_status").val("<%=Estado%>");
             $("#hid_estadoActual").val("<%=Estado%>");
+            
             $("#txt_actComercial_nroNegocio").val("<%=negocio%>");  
             if("<%=tipoUser%>" == "Usuario" || "<%=tipoUser%>" == "Backoffice")
             {      
@@ -246,6 +262,11 @@
             if("<%=tipoUser%>"!="Usuario"){
               cargaTipoNegocioInit();
             }
+        });
+        
+        $(window).bind("onLoad", function(){
+            //CArgar esto despues de todo!!!
+            cargarDatosFormulario();
         });
 
         function cargaTipoNegocioInit()
@@ -344,6 +365,25 @@
                     }
                 });
             }
+        }
+        
+        function cargarDatosFormulario(){
+            $.ajax({
+                url: "ServletSessionStore",
+                async: false,
+                dataType: "json",
+                success: function(datosFormulario){
+                    $.each(datosFormulario, function(i, input){
+                        console.log(input.name);
+                        console.log(input.value);
+                        if(input.value != ""){
+                            var elemento = $("[name="+input.name+"]");
+                            console.log(elemento);
+                            elemento.val(input.value);
+                        }
+                    });
+                }
+            });
         }
 </script>
 </head>
@@ -565,18 +605,25 @@
                                         }
                                         sp_Carga.execute();
                                         
-                                        final ResultSet CargarEstado = sp_Carga.getResultSet();                                                   
+                                        final ResultSet CargarEstado = sp_Carga.getResultSet();
                                         boolean add=true;
                                         
                                         while(CargarEstado.next())
                                         {
-                                           if(Estado.equals(CargarEstado.getString("descripcion"))){
-                                               add=false;
-                                           }
-                                    %>
-                                            <option value="<%=CargarEstado.getString("descripcion")%>"><%=CargarEstado.getString("descripcion")%></option>
-                                    <%                                                       
-                                        }if(add && !id.equals("1")){
+                                            String selected = "";
+                                            String descripcion = CargarEstado.getString("descripcion");
+                                            if(Estado.equals(descripcion)){
+                                                add=false;
+                                            }
+                                            if(estadoInicial.toLowerCase().equals(descripcion.toLowerCase())){
+                                                selected = "selected";
+                                            }
+                                            
+                                            %>
+                                                <option value="<%=descripcion%>" <%=(!selected.isEmpty()?selected:"")%>><%=descripcion%></option>
+                                            <%
+                                        }
+                                        if(add && !id.equals("1")){
                                             %>
                                             <option value="<%=Estado%>"><%=Estado%></option>
                                             <%

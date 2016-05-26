@@ -3,13 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/equipo-desarrollo-2/Documents/NetBeansProjects/SolutelGit/src/java/BO/ServletSPDetalleActComer.java</file>
-            <file>file:/C:/Users/equipo-desarrollo-2/Documents/NetBeansProjects/SolutelGit/src/java/BO/ServletSPNotificacion.java</file>
-            <file>file:/C:/Users/equipo-desarrollo-2/Documents/NetBeansProjects/SolutelGit/src/java/DAL/conexionBD.java</file>
-            <file>file:/C:/Users/equipo-desarrollo-2/Documents/NetBeansProjects/SolutelGit/web/SL_DistribucionMoviles.jsp</file>
-            <file>file:/C:/Users/equipo-desarrollo-2/Documents/NetBeansProjects/SolutelGit/src/java/BO/ServletDistribucion.java</file>
-            <file>file:/C:/Users/equipo-desarrollo-2/Documents/NetBeansProjects/SolutelGit/src/java/BO/ServletSPErrores.java</file>
-            <file>file:/C:/Users/equipo-desarrollo-2/Documents/NetBeansProjects/SolutelGit/src/java/BO/ServletSPWorkFlow.java</file>
+            <file>file:/C:/Users/equipo-desarrollo-2/Documents/NetBeansProjects/SolutelGit/web/SL_Actualiza_ActividadComercial.jsp</file>
+            <file>file:/C:/Users/equipo-desarrollo-2/Documents/NetBeansProjects/SolutelGit/src/java/BO/ServletValidaLogin.java</file>
         </group>
     </open-files>
 </project-private>

@@ -253,8 +253,24 @@ function AbrirDistribucion()
         return false;
     }
     if($("#txt_actComercial_cantMovil").val() != "")
-    {        
+    {
+        var myform = $('form');
+        var disabled = myform.find(':input:disabled').removeAttr('disabled');
+        var serialized = myform.serializeArray();
+        disabled.attr('disabled','disabled');
+        formSerialize = JSON.stringify(serialized);
         
+        $.ajax({
+            url: "ServletSessionStore",
+            data:{
+                formulario: formSerialize
+            },
+            type: 'POST',
+            async: false,
+            dataType: "json",
+            success: function(){
+            }
+        });
         var secu = $("#secuencia").val();
 //        location.href="SL_DistribucionMoviles.jsp?cantidad="+cantMovil+"&secuencia="+secu+"&negocio="+nroNegocio+"&tipoClte="+tipoClte+
         location.href="SL_DistribucionMoviles.jsp?cantidad="+cantMovil+"&secuencia="+secu+
