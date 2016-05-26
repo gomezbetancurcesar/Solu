@@ -463,8 +463,37 @@
                                             <option value="<%=ejecutivos%>"><%=ejecutivos%></option>
                                     <%                                                       
                                         }
+                                        %>
+                                        </select>
+                                    <% 
                                     }
-                                    if(tipoUser.equals("Supervisor"))
+                                    
+                                    if(tipoUser.equals("Supervisor") && (tipoNegocio.equals("Captura")))
+                                    {
+                                        %>
+                                        <select onchange="cargaRv()"  id="slt_actComercial_ejecutivo" name="slt_actComercial_ejecutivo">
+                                            <option value="">--Seleccione--</option>
+                                        <%  
+                                        
+                                        Statement stmtNomEje = null;
+                                        ResultSet rsNomEje = null;
+                                        String ejecutivos = "";
+                                        stmtNomEje = _connMy.createStatement();                                    
+                                        rsNomEje = stmtNomEje.executeQuery("SELECT nombre_user FROM sl_mae_usuarios where tipo='Usuario'");                                                                                         
+                                        while(rsNomEje.next())
+                                        {             
+                                            ejecutivos= (String)rsNomEje.getString("nombre_user");                                    
+                                    %>
+                                            <option value="<%=ejecutivos%>"><%=ejecutivos%></option>
+                                            
+                                    <%                                                       
+                                        }
+                                        %>
+                                        </select> 
+                                        <%
+                                    }
+                                                         
+                          if(tipoUser.equals("Supervisor") && (!tipoNegocio.equals("Captura")))
                                     {
                                         %>
                                         <select onchange="cargaRv()"  id="slt_actComercial_ejecutivo" name="slt_actComercial_ejecutivo">
@@ -481,11 +510,18 @@
                                             ejecutivos= (String)rsNomEje.getString("nombre_user");                                    
                                     %>
                                             <option value="<%=ejecutivos%>"><%=ejecutivos%></option>
+                                              
                                     <%                                                       
                                         }
+                                       
+                                        %>
+                                        </select> 
+                                        
+                                        <%
+                                       
                                     }
-                                %>                                        
-                                </select>                              
+                                     %>
+                                     
                             </td>
                             <td>Nombre:</td>
                             <td id="Area"> 
@@ -688,8 +724,10 @@
                                                     <option value="<%=tipoNegocio%>"><%=tipoNegocio%></option>
                                                     <%
                                                 }
+                                               
                                             %>
                                 </select>
+                                
                             </td>
                            <td><input type="hidden" name="txt_actComercial_corrCotiza" maxlength="11" id="txt_actComercial_corrCotiza" value="0"/></td>                           
                            

@@ -162,7 +162,7 @@ function seleccion_registro_actividadComercial(id){
                                                         <%
                                                     }else{
                                                         %>
-                                                            <option value="<%=CargarMaeTabla.getString("descripcion")%>"><%=CargarMaeTabla.getString("descripcion")%></option>
+                                                            <option value="<%=CargarMaeTabla.getString("descripcion")%>" ><%=CargarMaeTabla.getString("descripcion")%></option>
                                                         <%
                                                     }
                                                 }
@@ -174,7 +174,7 @@ function seleccion_registro_actividadComercial(id){
                                         if(tipoUser.equals("Supervisor") || tipoUser.equals("Usuario"))
                                         {
                                             %>
-                                            <option value="<%=s.getAttribute("tipoNegocio")%>"><%=s.getAttribute("tipoNegocio")%></option>
+                                            <option value="<%=s.getAttribute("tipoNegocio")%>" selected><%=s.getAttribute("tipoNegocio")%></option>
                                             <%
                                         }
 %> 
@@ -281,6 +281,12 @@ function seleccion_registro_actividadComercial(id){
                                     %>
                                 </select>
                             </td>
+                                <td >
+                                   
+                                </td>
+                                <td>
+                                     <input class ="botonera" type="submit" value="Reglas de Negocio" onclick ="ReglasNegocio()" name="Reglas"></input>
+                                </td>
                         </tr>
                         <tr>
                             <td align="right">Fecha &nbsp;&nbsp;Desde:</td>	
