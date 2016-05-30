@@ -370,7 +370,7 @@ function mostrarReglasDeNegocio(){
                             <%                                
                                 String var = "consulta_N";
                                 
-                                CallableStatement sp_usu = _connMy.prepareCall("{call sp_actividad_comercial(?,?,?,?,?,?,?,?,'','1','2','3','','','4','5','6','','','','','','','','0','0')}");
+                                CallableStatement sp_usu = _connMy.prepareCall("{call sp_actividad_comercial(?,?,?,?,?,?,?,?,'','1','2','3','','','4','5','6','','','','','','','','0','0',?)}");
                                 sp_usu.setString(1,var);
                                 sp_usu.setInt(2,0);
                                 sp_usu.setString(3,tipoUser);
@@ -378,7 +378,8 @@ function mostrarReglasDeNegocio(){
                                 sp_usu.setDate(5,null);                                
                                 sp_usu.setString(6,"");
                                 sp_usu.setString(7,"");
-                                sp_usu.setString(8,(String)s.getAttribute("rut"));                                                                
+                                sp_usu.setString(8,(String)s.getAttribute("rut"));
+                                sp_usu.setDate(9,null);  
                                 sp_usu.execute();
                                 final ResultSet rs = sp_usu.getResultSet();
                                 String cla = "";
@@ -437,11 +438,11 @@ function mostrarReglasDeNegocio(){
         </tr>
     </table>
     <div id="mensajeReglasDeNegocio" title="Reglas de Negocio">
-        Este es el contenido del popup
+        
         <table>
             <thead>
                 <tr>
-                    <th>Regla</th>
+<!--                    <th>Regla</th>-->
                 </tr>
             </thead>
             <tbody>
@@ -455,7 +456,7 @@ function mostrarReglasDeNegocio(){
                     {
                         %>
                         <tr>
-                            <td><%=reglasDeNegocio.getString("tipo_negocio")%></td>
+                            <td><%=reglasDeNegocio.getString("noticia")%></td>
                         </tr>
                         <%                                                       
                     }
@@ -487,6 +488,7 @@ function mostrarReglasDeNegocio(){
 </script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<link rel="stylesheet" href="//jqueryui.com/resources/demos/style.css">
+
+<!--<link rel="stylesheet" href="css/solutel.css" type="text/css">-->
 </html>
     

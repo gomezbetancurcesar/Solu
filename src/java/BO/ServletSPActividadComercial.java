@@ -68,6 +68,7 @@ public class ServletSPActividadComercial extends HttpServlet {
             String secuencia = "";
             String supervisor ="";
             String uf = "";
+            String fecha_finalizado = "";
             
             
             String opcion_ActividadComercial = request.getParameter("opcion_ActividadComercial");
@@ -90,6 +91,7 @@ public class ServletSPActividadComercial extends HttpServlet {
             tipoNegocio = request.getParameter("slt_actComercial_TipoNegocio");   
             supervisor = request.getParameter("slt_actComercial_supervisor"); 
             uf = request.getParameter("txt_actComercial_uf"); 
+            fecha_finalizado = request.getParameter("txt_filtroComercial_finalizado");
             
             if(caso.equals(""))
             {
@@ -123,12 +125,13 @@ public class ServletSPActividadComercial extends HttpServlet {
                 }
                 
                 Date sqlDate= new Date(formato.parse(fecha).getTime());
+                Date fechaFinalizadoFormato = new Date(formato.parse(fecha_finalizado).getTime());
                 int posicionRv = rv.indexOf('-'); 
                 int rvCorto = Integer.parseInt(rv.substring(0,posicionRv));              
                 int posicionRutCli = rutCli.indexOf('-'); 
                 int rutCliCorto = Integer.parseInt(rutCli.substring(0,posicionRutCli)); 
                            
-                sp_usu = _connMy.prepareCall("{call sp_actividad_comercial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+                sp_usu = _connMy.prepareCall("{call sp_actividad_comercial(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
                 sp_usu.setString(1,opcion_ActividadComercial);
                 sp_usu.setLong(2,Long.parseLong(corrCotiza));
                 sp_usu.setString(3,(String)s.getAttribute("tipo"));
@@ -155,6 +158,8 @@ public class ServletSPActividadComercial extends HttpServlet {
                 sp_usu.setString(24,"");
                 sp_usu.setLong(25, Long.parseLong(secuencia));
                 sp_usu.setDouble(26, Double.parseDouble(uf));
+                sp_usu.setDate(27,fechaFinalizadoFormato);
+                //sp_usu.setDate(27,sqlDate);
                 sp_usu.registerOutParameter(1, Types.VARCHAR);
                 sp_usu.execute();
                 String valorSalida = sp_usu.getString(1);                

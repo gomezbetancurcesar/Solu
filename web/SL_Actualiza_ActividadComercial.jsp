@@ -71,6 +71,8 @@
     String cantMovilSP ="";
     String negocio = "";
     String uf = "";
+    String fecha_finalizado="";
+    
     //String con el estado inicial predefinido
     String estadoInicial = "";
     try
@@ -116,7 +118,7 @@
         if(!id.equals("1"))
         {
             var = "consulta";        
-            sp_usu = _connMy.prepareCall("{call sp_actividad_comercial(?,?,'','',null,'','','','','','0','0','','','5','6','9','','','','','','','','0','0')}");
+            sp_usu = _connMy.prepareCall("{call sp_actividad_comercial(?,?,'','',null,'','','','','','0','0','','','5','6','9','','','','','','','','0','0',null)}");
             sp_usu.setString(1,var);
             sp_usu.setLong(2,Integer.parseInt(corrCotiza));
             sp_usu.execute();
@@ -143,6 +145,7 @@
                 comentario = rs.getString("comentario");
                 supervisorSP= rs.getString("supervisor");
                 uf = rs.getString("uf");
+                fecha_finalizado = rs.getString("fecha_finalizado");
             }            
         }else{
             //Carga el estado inicial al crear una actividad comercial
@@ -178,6 +181,7 @@
             $("#txt_actComercial_corrCotiza").val("<%=corrCotiza%>");
             $("#slt_actComercial_tipoServicio").val("<%=tipServi%>");        
             $("#txt_actComercial_cantMovil").val("<%=cantMovil%>");
+            $("#txt_filtroComercial_finalizado").val("<%=fecha_finalizado%>");
             
             $("#slt_actComercial_status").val("<%=Estado%>");
             $("#hid_estadoActual").val("<%=Estado%>");
@@ -555,11 +559,11 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Fecha Creación:</td>
+<!--                            <td>Fecha Creación:</td>
                             <td>
                                 <input type = "text" name = "txt_actComercial_fecha" readonly id= "txt_actComercial_fecha" size="12" />
                                 <img src="images/calendario.png" width="16" height="16" border="0" title="Fecha Inicial" id="lanzador"/>
-                                <!-- script que define y configura el calendario--> 
+                                 script que define y configura el calendario 
                                 <script type="text/javascript"> 
                                     Calendar.setup({ 
                                         inputField     :    "txt_actComercial_fecha",     // id del campo de texto 
@@ -567,24 +571,8 @@
                                         button     :    "lanzador"     // el id del botón que lanzará el calendario 
                                     }); 
                                 </script>	
-                            </td>
-                            <td>Caso:</td>
-                            <td><input type="text" name="txt_actComercial_caso" maxlength="11" id="txt_actComercial_caso" /></td>
-                            <td>Cantidad móviles:</td>
-                            <td>
-                                <input type="text" name="txt_actComercial_cantMovil" maxlength="5" id="txt_actComercial_cantMovil"/>                                                                 
-                                <%
-                                    if(!tipoUser.equals("Usuario"))
-                                    {
-                                %>
-                                        <input class="distribucion" type="button" id="btn_distribucion" name="btn_distribucion" value="Abrir distribución" onclick="AbrirDistribucion()"/>
-                                <%
-                                    }
-                                %>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Supervisor:</td>
+                            </td>-->
+                             <td>Supervisor:</td>
                             <td>                                
                                 
                                 <%
@@ -620,13 +608,76 @@
                                     }
                                 %>
                             </td>
+                            <td>Caso:</td>
+                            <td><input type="text" name="txt_actComercial_caso" maxlength="11" id="txt_actComercial_caso" /></td>
+                            <td>Cantidad móviles:</td>
+                            <td>
+                                <input type="text" name="txt_actComercial_cantMovil" maxlength="5" id="txt_actComercial_cantMovil"/>                                                                 
+                                <%
+                                    if(!tipoUser.equals("Usuario"))
+                                    {
+                                %>
+                                        <input class="distribucion" type="button" id="btn_distribucion" name="btn_distribucion" value="Abrir distribución" onclick="AbrirDistribucion()"/>
+                                <%
+                                    }
+                                %>
+                            </td>
+                        </tr>
+                        <tr>
+<!--                            <td align="left">Fecha&nbsp;&nbsp; Finalizado OK:</td>
+                                     <td>
+                                
+                                <input type = "text" readonly name = "txt_filtroComercial_ingreso" id= "txt_filtroComercial_ingreso" size="12" />
+                                <img src="images/calendario.png" width="16" height="16" border="0" title="Fecha Inicial" id="lanza" />
+                                 script que define y configura el calendario 
+                                <script type="text/javascript"> 
+                                    Calendar.setup({ 
+                                    inputField     :    "txt_filtroComercial_final",     // id del campo de texto 
+                                    ifFormat     :     "%Y-%m-%d",     // formato de la fecha que se escriba en el campo de texto 
+                                    button     :    "lanza"     // el id del botón que lanzará el calendario 
+                                    }); 
+                                </script>
+                                Codigo Sistemas SA
+                            </td>-->
+                        <td>Fecha Creación:</td>
+                            <td>
+                                <input type = "text" name = "txt_actComercial_fecha" readonly id= "txt_actComercial_fecha" size="12" />
+                                <img src="images/calendario.png" width="16" height="16" border="0" title="Fecha Inicial" id="lanzador"/>
+                                <!-- script que define y configura el calendario--> 
+                                <script type="text/javascript"> 
+                                    Calendar.setup({ 
+                                        inputField     :    "txt_actComercial_fecha",     // id del campo de texto 
+                                        ifFormat     :     "%Y-%m-%d",     // formato de la fecha que se escriba en el campo de texto 
+                                        button     :    "lanzador"     // el id del botón que lanzará el calendario 
+                                    }); 
+                                </script>	
+                            </td>
                             <td>Nro. Negocio:</td>
                             <td><input type="text" name="txt_actComercial_nroNegocio" maxlength="11" id="txt_actComercial_nroNegocio"/></td>
                             <td>CRM</td>
                             <td><input type="checkbox" name="chkBox_actComercial_CRM" id="chkBox_actComercial_CRM"/></td>
                         </tr>
                         <tr>
-                            <td colspan="2">Comentario:</td>	 
+<!--                           <td colspan="2">Comentario:</td>	 -->
+<!--                            // <td colspan="2"></td>-->
+<!--                                    <td >Comentario:</td>	 
+                                     <td rowspan="2"colspan=""> <textarea name="txa_actComercial_comentario" id="txa_actComercial_comentario" rows="2" cols="23"></textarea></td>-->
+
+                                 <td align="left">Fecha&nbsp;&nbsp; Finalizado OK:</td>
+                                     <td>
+                                
+                                <input type = "text" readonly name = "txt_filtroComercial_finalizado" id= "txt_filtroComercial_finalizado" size="12" />
+                                <img src="images/calendario.png" width="16" height="16" border="0" title="Fecha Inicial" id="lanza" />
+                                <!-- script que define y configura el calendario--> 
+                                <script type="text/javascript"> 
+                                    Calendar.setup({ 
+                                    inputField     :    "txt_filtroComercial_finalizado",     // id del campo de texto 
+                                    ifFormat     :     "%Y-%m-%d",     // formato de la fecha que se escriba en el campo de texto 
+                                    button     :    "lanza"     // el id del botón que lanzará el calendario 
+                                    }); 
+                                </script>
+                                <!--Codigo Sistemas SA-->
+                            </td>
                             <td>Tipo Cliente:</td>
                             <td>
                                 <select name="slt_actComercial_tipoClte" id="slt_actComercial_tipoClte">
@@ -700,9 +751,12 @@
                             </td>
                         </tr>
                         <tr>
-                            <td rowspan="2"colspan="2"> <textarea name="txa_actComercial_comentario" id="txa_actComercial_comentario" rows="2" cols="28"></textarea></td>
+<!--                            <td rowspan="2"colspan="2"> <textarea name="txa_actComercial_comentario" id="txa_actComercial_comentario" rows="2" cols="28"></textarea></td>-->
                         </tr>
                         <tr>
+<!--                            <td colspan="2"></td>-->
+                            <td >Comentario:</td>	 
+                            <td rowspan="2"colspan=""> <textarea name="txa_actComercial_comentario" id="txa_actComercial_comentario" rows="2" cols="23"></textarea></td>
                             <td>UF</td>
                             <td><input type="text" name="txt_actComercial_uf" maxlength="11" id="txt_actComercial_uf"/></td>
                             
@@ -752,6 +806,9 @@
                            <td><input type="hidden" name="txt_actComercial_corrCotiza" maxlength="11" id="txt_actComercial_corrCotiza" value="0"/></td>                           
                            
                         </tr>
+                                <tr >
+                                    
+                                </tr>
                     </table>
                 </form>
             </td>

@@ -232,12 +232,12 @@ function FuncionActividadComercial(id,secuencia){
         $("#slt_actComercial_TipoNegocio").focus();
         return false;
     }
-    if(uf == "" || valNumDouble.test(uf))
-    {
-        FuncionErrores(202);
-        $("#txt_actComercial_uf").focus();
-        return false;
-    }
+//    if(uf == "" || valNumDouble.test(uf))
+//    {
+//        FuncionErrores(202);
+//        $("#txt_actComercial_uf").focus();
+//        return false;
+//    }
     if(parseFloat(uf) > 999.99)
     {
         FuncionErrores(223);

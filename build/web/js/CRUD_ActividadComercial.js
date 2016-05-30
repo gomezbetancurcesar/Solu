@@ -40,6 +40,7 @@ function ActividadComercial(id,secuencia){
     var supervisor = $("#txt_actComercial_supervisor").val();
     var uf = $("#txt_actComercial_uf").val();
     var estado = $("#slt_actComercial_status").val();
+    var fecha_finalizado = $("#txt_filtroComercial_finalizado").val();
     
     var estadoNuevo = $.trim($("#slt_actComercial_status").val());
     var estadoActual = $.trim($("#hid_estadoActual").val());
@@ -83,7 +84,7 @@ function ActividadComercial(id,secuencia){
                     "&slt_actComercial_ejecutivo="+nomEje+"&txt_actComercial_nomCli="+nomCli+"&txt_actComercial_fecha="+fecha+"&txt_actComercial_caso="+caso+
                     "&txt_actComercial_cantMovil="+cantMovil+"&slt_actComercial_serviMovil="+ServicioMovil+"&txt_actComercial_nroNegocio="+nroNegocio+"&chkBox_actComercial_CRM="+crm+
                     "&slt_actComercial_tipoClte="+tipoCli+"&slt_actComercial_status="+estado+"&txa_actComercial_comentario="+comentario+"&txt_actComercial_corrCotiza="+corrCotiza+
-                    "&slt_actComercial_TipoNegocio="+tipoNegocio+"&seq="+secuencia+"&slt_actComercial_supervisor="+supervisor+"&txt_actComercial_uf="+uf,
+                    "&slt_actComercial_TipoNegocio="+tipoNegocio+"&seq="+secuencia+"&slt_actComercial_supervisor="+supervisor+"&txt_actComercial_uf="+uf+"&txt_filtroComercial_finalizado="+fecha_finalizado,
             type : 'POST',
             dataType : "html",
             success : function(data){
@@ -105,7 +106,6 @@ function ActividadComercial(id,secuencia){
         });
     }
 }
-
 function ModificaActComercial(id)
 {
     desmarca_registro_actividadComercial();
@@ -156,6 +156,7 @@ function  DeleteTmp(secuencia)
         }
     });
 }
+
 function filtroActComercial()
 {
     var filTipNeg = "";
