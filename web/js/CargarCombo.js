@@ -35,10 +35,14 @@ function cargaServicio()
 
 function cargaRv()
     {
-       var ejecutivo = $("#slt_actComercial_ejecutivo").val();  
-       var tipo = $("#tipoUser").val();
+        var ejecutivo = $("#slt_actComercial_ejecutivo").val();  
+        var bloquearEnCaptura = false;
+        if($("#supervisorCaptura").length > 0){
+            bloquearEnCaptura = true;
+        }
+        var tipo = $("#tipoUser").val();
         var rut = $("#rutUsuario").val();
-       $.ajax({
+        $.ajax({
             url : 'ServletCargaRv', 
             data: "ejecutivo="+ejecutivo+"&rut="+rut+"&tipoUser="+tipo,
             type : 'POST',
@@ -53,26 +57,31 @@ function cargaRv()
                 if(campos[1] == "Captura")
                 {
                     $("#slt_actComercial_TipoNegocio").attr("disabled","disabled");
-                    $("#slt_actComercial_TipoNegocio").children().remove();
+                    $("#slt_actComercial_TipoNegocio").html("")
                     $("#slt_actComercial_TipoNegocio").append("<option value='Captura'>Captura</option>");
                 }
                 if(campos[1] == "Desarrollo Peque\u00f1a Empresa")
                 {
                     $("#slt_actComercial_TipoNegocio").removeAttr("disabled");
                     //Sacar las opciones
-                    $("#slt_actComercial_TipoNegocio").children().remove();
-                    $("#slt_actComercial_TipoNegocio").append("<option value='Captura'>Captura</option>");
+                    $("#slt_actComercial_TipoNegocio").html("");
+                    //$("#slt_actComercial_TipoNegocio").append("<option value='Captura'>Captura</option>");
                     $("#slt_actComercial_TipoNegocio").append("<option selected value='Desarrollo Peque\u00f1a Empresa'>Desarrollo Peque\u00f1a Empresa</option>");                    
                 }
                 if(campos[1] == "Desarrollo Mediana Empresa")
                 {
                     $("#slt_actComercial_TipoNegocio").removeAttr("disabled");
                     //Sacar las opciones
-                    $("#slt_actComercial_TipoNegocio").children().remove();
-                    $("#slt_actComercial_TipoNegocio").append("<option value='Captura'>Captura</option>");
+                    $("#slt_actComercial_TipoNegocio").html("");
+                    //$("#slt_actComercial_TipoNegocio").append("<option value='Captura'>Captura</option>");
                     $("#slt_actComercial_TipoNegocio").append("<option selected value='Desarrollo Mediana Empresa'>Desarrollo Mediana Empresa</option>");                    
                 }
-                                              
+                
+                if(bloquearEnCaptura){
+                    $("#slt_actComercial_TipoNegocio").html("");
+                    $("#slt_actComercial_TipoNegocio").append("<option value='Captura'>Captura</option>");
+                    $("#slt_actComercial_TipoNegocio").val("Captura");
+                }
                 $("#txt_actComercial_supervisor").val(campos[2]);
                 $("#txt_actComercial_supervisor").attr("disabled","disabled");
                 

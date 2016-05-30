@@ -128,6 +128,10 @@ function seleccion_registro_actividadComercial(id){
         }
     });
 }
+
+function mostrarReglasDeNegocio(){
+    $("#mensajeReglasDeNegocio").dialog("open");
+}
 </script>
 </head>
 <body id="principal"> 
@@ -285,7 +289,7 @@ function seleccion_registro_actividadComercial(id){
                                    
                                 </td>
                                 <td>
-                                     <input class ="botonera" type="submit" value="Reglas de Negocio" onclick ="ReglasNegocio()" name="Reglas"></input>
+                                     <input class ="botonera" type="button" value="Reglas de Negocio" onclick ="mostrarReglasDeNegocio();" name="Reglas"></input>
                                 </td>
                         </tr>
                         <tr>
@@ -431,7 +435,34 @@ function seleccion_registro_actividadComercial(id){
 <!--                <input class ="botonera" style="display: none" type="button" onclick="desmarca_registro_actividadComercial()" id="btn_actComercial_cancela" name="btn_actComercial_cancela" value="Desmarcar" />-->
             </td>	
         </tr>
-    </table>                            
+    </table>
+    <div id="mensajeReglasDeNegocio" title="Reglas de Negocio">
+        Este es el contenido del popup
+        <table>
+            <thead>
+                <tr>
+                    <th>Regla</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <%
+                    stmt = null;
+                    ResultSet reglasDeNegocio = null;                                       
+                    stmt = _connMy.createStatement();
+                    String query = "select noticia from sl_mae_escritorio where vigencia='no'";
+                    reglasDeNegocio = stmt.executeQuery(query);
+                    while(reglasDeNegocio.next())
+                    {
+                        %>
+                        <tr>
+                            <td><%=reglasDeNegocio.getString("tipo_negocio")%></td>
+                        </tr>
+                        <%                                                       
+                    }
+                %>
+            </tbody>
+        </table>
+    </div>
 </body>
 <script>
     $(document).ready(function(){
@@ -442,7 +473,20 @@ function seleccion_registro_actividadComercial(id){
                 $("#bloqueados").val(bloqueados);
             }
         });
+        
+        $("#mensajeReglasDeNegocio").dialog({
+            autoOpen: false,
+            modal: true,
+            buttons: {
+              Aceptar: function() {
+                $( this ).dialog( "close" );
+              }
+            }
+        });
     });
 </script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" href="//jqueryui.com/resources/demos/style.css">
 </html>
     
