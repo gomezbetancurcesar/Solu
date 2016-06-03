@@ -363,6 +363,7 @@ function mostrarReglasDeNegocio(){
                                 <th width="6.8%">Cantidad M&oacute;viles</th>
                                 <th width="6.17%">Estado</th>
                                 <th width="10.17%">Tipo Negocio</th>
+                                <th width="10.17%">Fecha Finalizado</th>
 <!--                                <th width="7.37%">Estado Cierre</th>-->
                             </tr>
                         </thead>                        
@@ -413,6 +414,7 @@ function mostrarReglasDeNegocio(){
                             <td id="ActCom_cantMovil<%=cont%>"><%= rs.getString("cant_moviles")%></td>
                             <td id="ActCom_estado<%=cont%>"><%= rs.getString("estado")%></td>
                             <td id="ActCom_tipoNeg<%=cont%>"><%= rs.getString("tipo_negocio")%></td>
+                            <td id="ActCom_fechaFin<%=cont%>"><%= rs.getString("fecha_finalizado")%></td>
 <!--                            <td id="ActCom_estadoCierre<%=cont%>"><%= rs.getString("estado_cierre")%></td>-->
                             <%
                                     out.println("</tr>");                                   

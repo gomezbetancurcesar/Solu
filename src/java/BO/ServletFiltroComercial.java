@@ -98,7 +98,8 @@ public class ServletFiltroComercial extends HttpServlet {
                 salida += "<td id =\"ActCom_ServicioMovil"+cont+"\">"+rs.getString("servicios_moviles")+"</td>"; 
                 salida += "<td id =\"ActCom_cantMovil"+cont+"\">"+rs.getString("cant_moviles")+"</td>"; 
                 salida += "<td id =\"ActCom_estado"+cont+"\">"+rs.getString("estado")+"</td>";    
-                salida += "<td id=\"ActCom_estadoCierre<%=cont%>\">"+ rs.getString("estado_cierre")+"</td>";    
+                salida += "<td id=\"ActCom_tipoNeg<%=cont%>\">"+ rs.getString("tipo_negocio")+"</td>";    
+                salida += "<td id=\"ActCom_fechaFin<%=cont%>\">"+ rs.getString("fecha_finalizado")+"</td>";    
                 salida += "</tr>";
                 cont++;
                 }    
