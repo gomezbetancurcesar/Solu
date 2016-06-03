@@ -125,7 +125,12 @@ public class ServletSPActividadComercial extends HttpServlet {
                 }
                 
                 Date sqlDate= new Date(formato.parse(fecha).getTime());
-                Date fechaFinalizadoFormato = new Date(formato.parse(fecha_finalizado).getTime());
+                
+                Date fechaFinalizadoFormato = null;
+                if(!fecha_finalizado.isEmpty() && !fecha_finalizado.equals("null")){
+                    fechaFinalizadoFormato = new Date(formato.parse(fecha_finalizado).getTime());
+                }
+                
                 int posicionRv = rv.indexOf('-'); 
                 int rvCorto = Integer.parseInt(rv.substring(0,posicionRv));              
                 int posicionRutCli = rutCli.indexOf('-'); 

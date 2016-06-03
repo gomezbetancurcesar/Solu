@@ -363,6 +363,7 @@ function mostrarReglasDeNegocio(){
                                 <th width="6.8%">Cantidad M&oacute;viles</th>
                                 <th width="6.17%">Estado</th>
                                 <th width="10.17%">Tipo Negocio</th>
+                                <th width="10.17%">Fecha Finalizado</th>
 <!--                                <th width="7.37%">Estado Cierre</th>-->
                             </tr>
                         </thead>                        
@@ -385,6 +386,11 @@ function mostrarReglasDeNegocio(){
                                 String cla = "";
                                 while(rs.next())
                                 {
+                                    String fecha_finalizado = (String) rs.getString("fecha_finalizado");
+                                    if(fecha_finalizado == null || fecha_finalizado.isEmpty() || fecha_finalizado.toLowerCase().equals("null")){
+                                        fecha_finalizado = "";
+                                    }
+                                        
                                     if(cont % 2 == 0)
                                     {
                                         cla = "alt";
@@ -413,6 +419,7 @@ function mostrarReglasDeNegocio(){
                             <td id="ActCom_cantMovil<%=cont%>"><%= rs.getString("cant_moviles")%></td>
                             <td id="ActCom_estado<%=cont%>"><%= rs.getString("estado")%></td>
                             <td id="ActCom_tipoNeg<%=cont%>"><%= rs.getString("tipo_negocio")%></td>
+                            <td id="ActCom_fechaFin<%=cont%>"><%= fecha_finalizado%></td>
 <!--                            <td id="ActCom_estadoCierre<%=cont%>"><%= rs.getString("estado_cierre")%></td>-->
                             <%
                                     out.println("</tr>");                                   

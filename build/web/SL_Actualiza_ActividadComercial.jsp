@@ -146,6 +146,9 @@
                 supervisorSP= rs.getString("supervisor");
                 uf = rs.getString("uf");
                 fecha_finalizado = rs.getString("fecha_finalizado");
+                if(fecha_finalizado == null || fecha_finalizado.isEmpty() || fecha_finalizado.toLowerCase().equals("null")){
+                    fecha_finalizado = "";
+                }
             }            
         }else{
             //Carga el estado inicial al crear una actividad comercial
